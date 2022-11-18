@@ -1,0 +1,21 @@
+.button {
+  width: 100%;
+  color: white;
+  padding: 20px;
+  background: rgb(13, 153, 235);
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 17px;
+  cursor: pointer;
+}
+.button:disabled {
+  opacity: 0.6;
+  cursor: no-drop;
+}
+.button:hover {
+  background: rgba(13, 153, 235, 0.7);
+}
+.button:hover:disabled {
+  opacity: 0.6;
+}/*# sourceMappingURL=Button.module.css.map */

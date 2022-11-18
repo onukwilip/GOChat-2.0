@@ -1,0 +1,107 @@
+.Login {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0rem;
+  width: 100%;
+  min-height: 100vh;
+}
+.Login a {
+  color: rgb(13, 153, 235);
+}
+.Login .left-side {
+  width: 100%;
+  flex: 2.3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-direction: column;
+}
+.Login .left-side .header {
+  width: 100%;
+  text-align: center;
+}
+.Login .left-side .header h1 {
+  font-size: 45px;
+  color: rgba(0, 0, 0, 0.7);
+}
+.Login .left-side .icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+.Login .left-side .icons img {
+  width: 80px;
+  height: auto;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  transition: 0.5s margin-top;
+}
+.Login .left-side .icons img:hover {
+  margin-top: -20px;
+}
+.Login .left-side .optional {
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.5);
+}
+.Login .left-side .signUp {
+  display: none;
+}
+.Login .left-side .container {
+  width: 400px;
+}
+.Login .right-side {
+  width: 100%;
+  flex: 1.5;
+  background: linear-gradient(to right bottom, rgba(30, 14, 243, 0.5), rgba(128, 0, 128, 0.5));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-direction: column;
+}
+.Login .right-side > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 300px;
+  text-align: center;
+  word-wrap: break-word;
+  flex-direction: column;
+  color: #fff;
+}
+.Login .right-side > div .jumbo {
+  font-size: 50px;
+  line-height: 1px;
+}
+
+@media only screen and (max-width: 850px) {
+  .Login {
+    padding: 0;
+    margin: 0;
+  }
+  .Login .left-side {
+    width: 100%;
+    flex: 1;
+  }
+  .Login .left-side .signUp {
+    display: block;
+  }
+  .Login .right-side {
+    display: none;
+  }
+}
+@media (max-width: 450px) {
+  .Login .left-side {
+    overflow: hidden;
+    width: 100%;
+    padding: 0 10px;
+  }
+  .Login .left-side .container {
+    width: 100%;
+  }
+}/*# sourceMappingURL=Login.module.css.map */

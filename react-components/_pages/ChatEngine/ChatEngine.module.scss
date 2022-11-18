@@ -1,0 +1,133 @@
+@import "../../variables.scss";
+
+.hamburger {
+  border-radius: 50%;
+  padding: $padding;
+  box-shadow: $box-shadow;
+  position: fixed;
+  right: 0.5rem;
+  top: 7rem;
+  z-index: 15;
+  backdrop-filter: blur(10px);
+  display: none;
+}
+
+.mobile-menu {
+  position: fixed;
+  z-index: 15;
+  height: 97%;
+  overflow-y: auto;
+  margin: $padding;
+  display: none;
+  animation: mobile-menu 0.5s forwards;
+}
+
+.chat-engine {
+  //@include flex(stretch, start, 5px);
+  @include flex(stretch, flex-start, 0);
+  flex-direction: row;
+  height: 100vh;
+  // min-height: 100vh;
+  overflow-y: auto;
+
+  background-color: beige;
+  & > div {
+    //border: 1px solid black;
+  }
+  & > div.navbar {
+    padding: $padding;
+    flex: 0.05;
+    border: none;
+    box-shadow: $box-shadow;
+
+    background-color: whitesmoke;
+  }
+  & > div.body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    flex: 0.95;
+    overflow-y: auto;
+    // height: 100%;
+    min-height: 100%;
+  }
+  .body {
+    @include flex(stretch, flex-start, 0);
+  }
+  .body-container {
+    //@include flex(stretch, start, 0);
+    @include flex(stretch, flex-start, 5px);
+    flex: 1;
+    overflow-y: auto;
+    height: 100%;
+    & > div {
+      //border: 1px solid black;
+    }
+    .sidebar {
+      flex: 3;
+      overflow-y: auto;
+      height: 100%;
+      .sidebar-children {
+        background-color: white;
+        // height: 100vh;
+        min-height: 100vh;
+      }
+    }
+    .chat-block {
+      flex: 7;
+      background-color: white;
+    }
+  }
+  .mobile-body {
+    display: none;
+    min-height: 100vh;
+  }
+}
+
+@keyframes mobile-menu {
+  from {
+    left: -1000px;
+  }
+  to {
+    left: 0;
+  }
+}
+
+@media (max-width: 850px) {
+  .chat-engine {
+    .body-container {
+      display: none;
+    }
+    .mobile-body {
+      display: block;
+      width: 100%;
+      background-color: #fff;
+      min-height: 100vh;
+      height: auto;
+      //height: 100%;
+      overflow-y: auto;
+    }
+  }
+}
+
+@media (max-width: 750px) {
+}
+
+@media (max-width: 650px) {
+}
+@media (max-width: 550px) {
+  .hamburger {
+    display: block;
+  }
+  .mobile-menu {
+    display: block;
+  }
+  .chat-engine {
+    flex-direction: column-reverse;
+    //min-height: 50vh;
+    height: 100vh;
+    .navbar {
+      display: none;
+    }
+  }
+}

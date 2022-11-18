@@ -1,0 +1,64 @@
+.form-container .form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  flex-direction: column;
+}
+.form-container .form .textarea {
+  width: 100%;
+}
+.form-container .form .textarea textarea {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  outline: none;
+  border: 0;
+  min-height: 100px;
+  font-size: 16px;
+}
+.form-container .form .textarea textarea:hover {
+  outline: 2px solid rgba(3, 46, 236, 0.5);
+}
+.form-container .form .form-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 0px;
+  min-width: auto;
+  height: 50px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+.form-container .form .form-group:hover {
+  outline: 2px solid rgba(3, 46, 236, 0.5);
+}
+.form-container .form .form-group .form-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  padding: 1rem;
+}
+.form-container .form .form-group .form-icon i {
+  quotes: 40px;
+  transform: scale(1.5);
+}
+.form-container .form .form-group .form-tag {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0px;
+  width: 100%;
+}
+.form-container .form .form-group .form-tag input {
+  outline: 0;
+  border: 0;
+  background-color: transparent;
+  padding: 10px 0;
+  font-size: 16px;
+  width: 100%;
+}/*# sourceMappingURL=Form.module.css.map */

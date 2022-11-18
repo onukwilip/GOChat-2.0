@@ -1,0 +1,288 @@
+@import "../../../variables.scss";
+.loading-container {
+  height: 100vh;
+  width: 100%;
+}
+
+.user {
+  @include flex(stretch, start, 0);
+  flex-direction: column;
+  min-height: 100%;
+  overflow-y: auto;
+  // background: #fff;
+}
+
+.profile {
+  @include flex(center, center, 0);
+  flex-direction: column;
+  padding: $padding;
+  width: 100%;
+  .img-container {
+    width: 60px;
+    height: 60px;
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      box-shadow: $box-shadow;
+      object-fit: cover;
+      border: 3px solid beige;
+    }
+  }
+  .name {
+    width: 100%;
+    em {
+      display: block;
+      &:nth-of-type(1) {
+        font-weight: bold;
+        font-size: 18px;
+        font-style: normal;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+      &:nth-of-type(2) {
+        font-weight: 400;
+        font-size: 15px;
+        font-style: normal;
+        text-align: center;
+        color: rgba(black, 0.6);
+      }
+    }
+  }
+
+  .stats-container {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    .stats {
+      width: 100%;
+      padding: 5px;
+      border-radius: 5px;
+      box-shadow: $box-shadow;
+      @include flex(center, center, 0);
+      background-color: whitesmoke;
+      cursor: pointer;
+      flex: 1;
+      transition: 0.2s;
+      position: absolute;
+      &:hover {
+        margin-top: -10px;
+      }
+      .stat-child {
+        width: 100%;
+        text-align: center;
+        p {
+          em {
+            display: block;
+            &:nth-of-type(1) {
+              font-weight: bold;
+              font-size: 18px;
+              font-style: normal;
+              text-align: center;
+              margin-bottom: 5px;
+            }
+            &:nth-of-type(2) {
+              font-weight: bold;
+              font-size: 15px;
+              font-style: normal;
+              text-align: center;
+              color: rgba(black, 0.6);
+            }
+          }
+        }
+        &:nth-of-type(2) {
+          border-left: 1px solid rgba(black, 0.2);
+          border-right: 1px solid rgba(black, 0.2);
+        }
+      }
+    }
+  }
+
+  .btn-container {
+    width: 100%;
+    @include flex(center, center, 1rem);
+    flex-wrap: wrap;
+    button {
+      @include flex(center, center, 1rem);
+      i {
+        color: white;
+      }
+    }
+    .btn-danger {
+      gap: 4px;
+      background-color: orangered;
+      &:hover {
+        background-color: rgba(orangered, 0.7);
+      }
+    }
+  }
+}
+
+.danger-zone {
+  width: 100%;
+  border: 5px double orangered;
+  margin-top: 20px;
+  padding: $padding;
+  border-radius: 10px;
+  button {
+    @include flex(center, center, 1rem);
+    i {
+      color: white;
+    }
+  }
+  h1 {
+    color: orangered;
+    font-weight: bold;
+  }
+  .btn-danger {
+    gap: 4px;
+    background-color: orangered;
+    &:hover {
+      background-color: rgba(orangered, 0.7);
+    }
+  }
+}
+
+.settings {
+  padding: $padding $padding + 20px;
+  @include flex(center, center, 0);
+  flex-direction: column;
+  .header {
+    width: 100%;
+    h1 {
+      font-size: 25px;
+    }
+  }
+  .accordions {
+    width: 100%;
+  }
+}
+
+.accordion {
+  @include flex(center, center, 1rem);
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 15px;
+  .tab-container {
+    width: 100%;
+    position: relative;
+    height: 70px;
+  }
+  .tab {
+    position: absolute;
+    padding: 15px 16px;
+    @include flex(center, center, 2rem);
+    width: 100%;
+    flex: 1;
+    border-radius: 10px;
+    box-shadow: $box-shadow;
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover {
+      margin-top: -5px;
+      .icon-container {
+        i {
+          color: $button-hover-default;
+        }
+      }
+    }
+    .icon-container {
+      i {
+        transform: scale(1.5);
+        color: rgba(black, 0.2);
+      }
+      &.next {
+        i {
+          transform: scale(0.9);
+        }
+      }
+    }
+    .details {
+      width: 100%;
+      em {
+        display: block;
+        font-style: normal;
+        &:first-of-type {
+          font-weight: bold;
+          font-size: 16px;
+          margin-bottom: 5px;
+        }
+        &:last-of-type {
+          font-weight: bold;
+          font-size: 14px;
+          font-style: normal;
+          color: rgba(black, 0.6);
+        }
+      }
+    }
+  }
+  .body {
+    border-radius: 10px;
+    background-color: whitesmoke;
+    padding: $padding + 10px;
+    width: 100%;
+    animation: body-animate 0.2s forwards;
+    height: 10px;
+    overflow-y: auto;
+  }
+}
+
+.edit-user {
+  width: 100%;
+  .password {
+    width: 100%;
+    @include flex(start, flex-start, 0.5rem);
+    flex-direction: column;
+  }
+  .img-upload {
+    width: 100%;
+    height: 200px;
+    background-color: rgba(whitesmoke, 0.5);
+    border-radius: 10px;
+    border: 5px double $button-hover-default;
+    cursor: pointer;
+    @include flex(center, center, 1rem);
+    flex-direction: column;
+    color: rgba(black, 0.6);
+    i {
+      transform: scale(3);
+    }
+  }
+  .img-container {
+    position: relative;
+    width: 100%;
+    @include flex(stretch, flex-start, 0);
+    img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    label {
+      padding: $padding;
+      border-radius: 50%;
+      position: absolute;
+      background-color: #fff;
+      bottom: -0.5rem;
+      right: -0.5rem;
+      box-shadow: $box-shadow;
+      cursor: pointer;
+      transition: 0.2s;
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+
+@keyframes body-animate {
+  from {
+    height: 0;
+    overflow-y: auto;
+    padding: 0;
+  }
+  to {
+    height: auto;
+    padding: $padding + 10px;
+  }
+}

@@ -1,0 +1,267 @@
+@import "../../../variables.scss";
+.chat {
+  position: relative;
+  height: 100%;
+  overflow-y: hidden;
+  .cursor {
+    cursor: pointer;
+  }
+  .icon-hover:hover {
+    color: $button-default;
+  }
+  .bg {
+    background: url("../../../assets/images/chat-bg3\ \(2\).jpg");
+    width: 100%;
+    height: 100vh;
+    background-size: 300px;
+    position: absolute;
+    top: 0;
+    opacity: 0.4;
+    z-index: 1;
+  }
+  .body {
+    z-index: 10;
+    position: relative;
+    //New
+    @include flex(center, space-between, 0);
+    flex-direction: column;
+    height: 100%;
+
+    .header {
+      width: 100%;
+      position: relative;
+      padding: $padding + 10px;
+      background-color: white;
+      box-shadow: $box-shadow;
+      overflow-y: hidden;
+      @include flex(start, flex-start, 0);
+      & > div {
+        @include flex(center, center, 1rem);
+      }
+      .img-container {
+        position: relative;
+        img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+        .status {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background-color: $button-default;
+          position: absolute;
+          bottom: 5px;
+          right: 0;
+          border: 2px solid beige;
+        }
+        .online {
+          background-color: $button-default;
+        }
+        .offline {
+          background-color: lightgray;
+        }
+      }
+      .details {
+        width: 100%;
+        line-height: 10px;
+      }
+      .name {
+        font-weight: bold;
+      }
+      .status {
+        font-size: 15px;
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .platform {
+      height: 70%;
+      width: 100%;
+      overflow-y: auto;
+      padding: $padding;
+      color: rgba(0, 0, 0, 0.8);
+    }
+    .form {
+      overflow-y: auto;
+      padding: $padding + 10px;
+      background-color: white;
+      width: 100%;
+
+      .form-parent {
+        @include flex(center, center, 1rem);
+        flex-direction: row;
+        width: 100%;
+        button {
+          background: inherit;
+        }
+        .l-side {
+          width: 80%;
+        }
+        .middle {
+          width: 5%;
+          text-align: center;
+          i {
+            transform: scale(1.5);
+            color: white;
+            background: $button-hover-default;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            &:hover {
+              background-color: $button-default;
+            }
+          }
+        }
+        .r-side {
+          width: 10%;
+          text-align: center;
+          button {
+            outline: none;
+            border: none;
+          }
+          i {
+            transform: scale(1.5);
+            color: white;
+            background: $button-hover-default;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            &:hover {
+              background-color: $button-default;
+            }
+          }
+        }
+      }
+    }
+  }
+  .no-chat {
+    width: 100%;
+    height: 100%;
+    @include flex(center, center, 0);
+    flex-direction: column;
+    h1 {
+      font-size: 40px;
+      font-weight: bold;
+      text-align: center;
+    }
+    p {
+      font-size: 18px;
+      text-align: center;
+    }
+  }
+  .files-container {
+    @include flex(center, flex-start, 1rem);
+    padding: 0 $padding;
+    & > div {
+      padding: $padding - 5px;
+      background-color: rgba(0, 0, 0, 0.2);
+      line-height: 2rem;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+  .parent-chat {
+    width: 100%;
+    .replied-message {
+      padding: $padding;
+      border-radius: 5px;
+      border-left: 5px solid rgba(gray, 1);
+      background-color: rgba(lightgray, 1);
+      @include flex(center, space-between, 0);
+      & > div {
+        word-wrap: break-word;
+      }
+      em {
+        display: block;
+        font-style: normal;
+      }
+    }
+    .parent-author {
+      font-weight: bold;
+    }
+    .remove-parent {
+      cursor: pointer;
+      padding: 0 10px;
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .chat {
+    height: 100%;
+    .bg {
+    }
+    .body {
+      height: 100%;
+      overflow-y: auto;
+      .platform {
+        height: 80%;
+        // padding: 10px;
+      }
+      .form {
+        padding: $padding;
+        .form-parent {
+          .l-side {
+            width: 60%;
+          }
+          .middle {
+            width: 5%;
+            text-align: center;
+            i {
+              transform: scale(1);
+            }
+          }
+          .r-side {
+            padding-left: 5px;
+            i {
+              transform: scale(1);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .chat {
+    .body {
+      .platform {
+        // height: 80.8%;
+      }
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .chat {
+    .bg {
+    }
+    .body {
+      height: 100%;
+      overflow-y: auto;
+      .platform {
+        // height: 76%;
+        // //max-height: 440px;
+        // overflow: auto;
+        // padding: 10px;
+      }
+      .form {
+        // height: 10%;
+      }
+    }
+  }
+}
+
+@media (max-width: 340px) {
+  .chat {
+    .body {
+      .platform {
+        // height: 73.3%;
+      }
+    }
+  }
+}

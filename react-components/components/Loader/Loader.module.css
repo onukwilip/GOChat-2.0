@@ -1,0 +1,29 @@
+.loader {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.loader img {
+  -webkit-animation: loader 1s infinite forwards;
+          animation: loader 1s infinite forwards;
+}
+
+@-webkit-keyframes loader {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes loader {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}/*# sourceMappingURL=Loader.module.css.map */

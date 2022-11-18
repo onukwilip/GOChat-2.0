@@ -1,0 +1,30 @@
+.messages {
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 30px;
+  height: 100vh;
+}
+.messages .search {
+  width: 100%;
+}
+.messages .users {
+  margin-top: 2.5rem;
+  overflow-y: auto;
+  height: 90vh;
+  width: 100%;
+}
+
+@media (max-width: 550px) {
+  .messages {
+    height: 100%;
+  }
+  .messages .users {
+    height: 100%;
+  }
+}/*# sourceMappingURL=Messages.module.css.map */

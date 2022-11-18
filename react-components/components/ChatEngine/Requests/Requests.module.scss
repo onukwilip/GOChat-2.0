@@ -1,0 +1,27 @@
+@import "../../../variables.scss";
+.all-requests {
+  overflow-y: auto;
+  @include flex(center, center, 0);
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: $padding + 20px;
+  height: 100vh;
+  .search {
+    width: 100%;
+  }
+  .users {
+    overflow-y: auto;
+    height: 69.5vh;
+    width: 100%;
+  }
+}
+
+@media (max-width: 550px) {
+  .all-contacts {
+    height: 100%;
+    .users {
+      height: 100%;
+    }
+  }
+}

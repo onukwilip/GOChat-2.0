@@ -1,0 +1,100 @@
+@import "../../variables.scss";
+
+.Login {
+  @include flex(stretch, center, 0rem);
+  width: 100vw;
+  flex-direction: row-reverse;
+  min-height: 100vh;
+  a {
+    color: $link;
+  }
+  .left-side {
+    width: 100%;
+    flex: 2.3;
+    @include flex(center, center, 1rem);
+    flex-direction: column;
+    .header {
+      width: 100%;
+      text-align: center;
+      h1 {
+        font-size: 45px;
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+    .icons {
+      @include flex(center, center, 1.5rem);
+      img {
+        width: 80px;
+        height: auto;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        transition: 0.5s margin-top;
+        &:hover {
+          margin-top: -20px;
+        }
+      }
+    }
+    .optional {
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.5);
+    }
+    .double-input {
+      width: 100%;
+      @include flex(center, center, 0.7rem);
+      > div {
+        width: 50% !important;
+      }
+    }
+    .signUp {
+      display: none;
+    }
+  }
+  .right-side {
+    width: 100%;
+    flex: 1.5;
+    background: $login-bg;
+    @include flex(center, center, 1rem);
+    flex-direction: column;
+    > div {
+      @include flex(center, center, 1rem);
+      width: 350px;
+      text-align: center;
+      word-wrap: break-word;
+      flex-direction: column;
+      color: #fff;
+      .jumbo {
+        font-size: 50px;
+      }
+      .details {
+        position: relative;
+        top: -50px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .Login {
+    padding: 0;
+    margin: 0;
+    .left-side {
+      width: 100%;
+      flex: 1;
+      .signUp {
+        display: block;
+      }
+    }
+    .right-side {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .Login {
+    .left-side {
+      padding: 0 $padding;
+    }
+  }
+}

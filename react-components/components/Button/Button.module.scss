@@ -1,0 +1,25 @@
+@import "../../variables.scss";
+
+.button {
+  width: 100%;
+  color: white;
+  padding: 20px;
+  background: $button-default;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 17px;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: no-drop;
+  }
+
+  &:hover {
+    background: $button-hover-default;
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+}

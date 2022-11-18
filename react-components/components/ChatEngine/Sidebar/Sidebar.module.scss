@@ -1,0 +1,612 @@
+@import "../../../variables.scss";
+
+.sidebar-icon {
+  //border: $border;
+  .icon-group {
+    position: relative;
+    .icon-container {
+      position: absolute;
+      padding: $padding + 5px;
+      border-radius: 50%;
+      box-shadow: $box-shadow;
+      background: white;
+      right: 5px;
+      bottom: -1rem;
+      cursor: pointer;
+      &:hover {
+        animation: icon-hover 0.4s forwards;
+      }
+    }
+  }
+
+  .options {
+    padding: $padding + 20px 0;
+    ul {
+      list-style: none;
+      display: block;
+      margin: 0;
+      padding: 0;
+      @include flex(center, center, 3px);
+      a.active {
+        li {
+          background-color: rgba(0, 0, 0, 0.1);
+          color: $button-default;
+          border-radius: 100px;
+        }
+      }
+      li {
+        padding: 12px 16px;
+        color: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        font-weight: bold;
+
+        &:hover,
+        &:focus {
+          background-color: rgba(0, 0, 0, 0.1);
+          color: $button-default;
+          border-radius: 100px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes icon-hover {
+  to {
+    bottom: -10px;
+  }
+}
+
+.sidebar-map-components {
+  padding: 0;
+  height: 100%;
+  overflow-y: auto;
+  & > h1 {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .all-components {
+    overflow-y: auto;
+    // max-height: 62vh;
+    height: 62vh;
+    // &::-webkit-scrollbar {
+    //   display: none;
+    // }
+    .large {
+      @include flex(center, flex-start, 1rem);
+    }
+    .medium {
+      display: none;
+    }
+  }
+
+  .all-user-components {
+    overflow-y: auto;
+    height: 70vh;
+    .large {
+      @include flex(center, flex-start, 1rem);
+    }
+    .medium {
+      display: none;
+    }
+  }
+}
+
+.sidebar-map-discussion-components {
+  padding: 0;
+  height: 100%;
+  overflow-y: auto;
+  & > h1 {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .all-components {
+    overflow-y: auto;
+    height: 70vh;
+    .large {
+      @include flex(center, flex-start, 1rem);
+    }
+    .medium {
+      display: none;
+    }
+  }
+}
+
+.sidebar-user {
+  @include flex(center, flex-start, 1rem);
+  width: 100%;
+  cursor: pointer;
+  &:hover {
+    animation: user-hover 0.2s forwards;
+  }
+  &:hover {
+    i {
+      color: $button-default;
+    }
+  }
+  .img-container {
+    position: relative;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: orange;
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+      border: 2px solid beige;
+    }
+    .online {
+      background-color: $button-default;
+    }
+    .offline {
+      background-color: lightgray;
+    }
+  }
+  .details {
+    width: 100%;
+  }
+  .name {
+    font-weight: bold;
+  }
+  .about {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .user-icon {
+    width: 10%;
+    i {
+      transform: scale(1.3);
+    }
+  }
+}
+
+.no-item {
+  height: 60vh;
+}
+
+.sidebar-user-profile {
+  @include flex(center, flex-start, 1rem);
+  width: 100%;
+  cursor: pointer;
+  min-height: 80px;
+  &:hover {
+    animation: user-hover 0.2s forwards;
+  }
+  &:hover {
+    i {
+      color: $button-default;
+    }
+  }
+  .img-container {
+    position: relative;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: orange;
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+      border: 2px solid beige;
+    }
+    .online {
+      background-color: $button-default;
+    }
+    .offline {
+      background-color: lightgray;
+    }
+  }
+  .details {
+    width: 100%;
+  }
+  .name {
+    font-weight: bold;
+  }
+  .about {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .user-icon {
+    width: 12%;
+    i {
+      transform: scale(1.3);
+    }
+  }
+}
+
+.sidebar-sent-request {
+  @include flex(center, flex-start, 1rem);
+  width: 100%;
+  cursor: pointer;
+  min-height: 80px;
+  &:hover {
+    animation: user-hover 0.2s forwards;
+  }
+  &:hover {
+    i {
+      color: $button-default;
+    }
+  }
+  .img-container {
+    position: relative;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: orange;
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+      border: 2px solid beige;
+    }
+    .online {
+      background-color: $button-default;
+    }
+    .offline {
+      background-color: lightgray;
+    }
+  }
+  .details {
+    width: 100%;
+  }
+  .name {
+    font-weight: bold;
+  }
+  .about {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .icon-container {
+    width: 30%;
+    @include flex(center, center, 0);
+  }
+  .delete-icon {
+    width: 40px;
+    border-radius: 50%;
+    height: 40px;
+    @include flex(center, center, 0);
+    transition: 0.2s;
+    background-color: rgba(0, 0, 0, 0.5);
+    i {
+      color: white;
+      transform: scale(1.3);
+    }
+    &:hover {
+      background-color: red;
+      transform: scale(1.1);
+    }
+  }
+}
+
+.sidebar-recieved-request {
+  @include flex(center, flex-start, 1rem);
+  width: 100%;
+  cursor: pointer;
+  min-height: 80px;
+  &:hover {
+    animation: user-hover 0.2s forwards;
+  }
+  &:hover {
+    i {
+      color: $button-default;
+    }
+  }
+  .img-container {
+    position: relative;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: orange;
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+      border: 2px solid beige;
+    }
+    .online {
+      background-color: $button-default;
+    }
+    .offline {
+      background-color: lightgray;
+    }
+  }
+  .details {
+    width: 100%;
+  }
+  .name {
+    font-weight: bold;
+  }
+  .about {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .icon-container {
+    width: 60%;
+    @include flex(center, flex-start, 5px);
+    button {
+      width: auto;
+      height: auto;
+      border: none;
+      background-color: transparent;
+      margin: 0;
+      padding: 0;
+      border-radius: 50%;
+      transition: 0.2s;
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+  .decline-icon {
+    width: 40px;
+    border-radius: 50%;
+    height: 40px;
+    @include flex(center, center, 0);
+    transition: 0.2s;
+    background-color: rgba(0, 0, 0, 0.5);
+    i {
+      color: white;
+      transform: scale(1.3);
+    }
+    &:hover {
+      background-color: red;
+      transform: scale(1.1);
+    }
+  }
+  .accept-icon {
+    width: 40px;
+    border-radius: 50%;
+    height: 40px;
+    @include flex(center, center, 0);
+    transition: 0.2s;
+    background-color: rgba(0, 0, 0, 0.5);
+    i {
+      color: white;
+      transform: scale(1.3);
+    }
+    &:hover {
+      background-color: lightgreen;
+      // transform: scale(1.1);
+    }
+  }
+}
+
+.sidebar-discussion {
+  @include flex(center, flex-start, 1rem);
+  width: 100%;
+  cursor: pointer;
+  &:hover {
+    animation: user-hover 0.2s forwards;
+  }
+  &:hover {
+    i {
+      color: $button-default;
+    }
+  }
+  .img-container {
+    position: relative;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: orange;
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+      border: 2px solid beige;
+    }
+    .online {
+      background-color: $button-default;
+    }
+    .offline {
+      background-color: lightgray;
+    }
+  }
+  .details {
+    width: 100%;
+  }
+  .name {
+    font-weight: bold;
+  }
+  .about {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .user-icon {
+    width: 10%;
+    i {
+      transform: scale(1.3);
+    }
+  }
+  .message-count {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: $button-default;
+    border: 5px solid beige;
+    padding: 20px;
+    color: white;
+    @include flex(center, center, 0);
+  }
+}
+
+.sidebar-notification {
+  @include flex(center, flex-start, 1rem);
+  width: 100%;
+  cursor: pointer;
+  padding: 0 $padding;
+  &:hover {
+    animation: user-hover 0.2s forwards;
+  }
+  &:hover {
+    i {
+      color: $button-default;
+    }
+  }
+  .img-container {
+    position: relative;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: orange;
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+      border: 2px solid beige;
+    }
+    .online {
+      background-color: $button-default;
+    }
+    .offline {
+      background-color: lightgray;
+    }
+  }
+  .details {
+    width: 100%;
+  }
+  .name {
+    font-weight: bold;
+  }
+  .about {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .user-icon {
+    width: 10%;
+    i {
+      transform: scale(1.3);
+    }
+  }
+
+  .icon-container {
+    width: 30%;
+    @include flex(center, center, 0);
+  }
+  .delete-icon {
+    width: 40px;
+    border-radius: 50%;
+    height: 40px;
+    @include flex(center, center, 0);
+    transition: 0.2s;
+    background-color: rgba(0, 0, 0, 0.5);
+    i {
+      color: white;
+      transform: scale(1.3);
+    }
+    &:hover {
+      background-color: red;
+      transform: scale(1.1);
+    }
+  }
+}
+
+.unviewed {
+  background-color: rgba($button-hover-default, 0.2);
+}
+
+.notifications {
+  &:nth-of-type(1) {
+    border-top-right-radius: $padding;
+    border-top-left-radius: $padding;
+  }
+  &:nth-last-of-type(1) {
+    border-bottom-right-radius: $padding;
+    border-bottom-left-radius: $padding;
+  }
+}
+
+@keyframes user-hover {
+  from {
+  }
+  to {
+    opacity: 1;
+    border-bottom: 2px solid $button-default;
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .sidebar-map-components {
+    .all-components {
+      .large {
+        display: none;
+      }
+      .medium {
+        @include flex(center, flex-start, 1rem);
+      }
+    }
+  }
+
+  .sidebar-map-discussion-components {
+    .all-components {
+      .large {
+        display: none;
+      }
+      .medium {
+        @include flex(center, flex-start, 1rem);
+      }
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .sidebar-map-components {
+    height: 100%;
+    .all-components {
+      min-height: 100%;
+      height: auto;
+      // overflow: hidden;
+    }
+    .all-user-components {
+      min-height: 100%;
+      height: auto;
+      // overflow: hidden;
+    }
+  }
+}

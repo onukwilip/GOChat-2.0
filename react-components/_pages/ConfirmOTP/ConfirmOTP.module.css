@@ -1,0 +1,30 @@
+.confirm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-direction: column;
+}
+.confirm > h1 {
+  font-size: 40px;
+}
+.confirm .email-address {
+  width: 50%;
+  text-align: center;
+}
+.confirm .action {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+@media (max-width: 550px) {
+  .confirm {
+    padding: 10px;
+  }
+  .confirm .email-address {
+    width: 100%;
+  }
+}/*# sourceMappingURL=ConfirmOTP.module.css.map */

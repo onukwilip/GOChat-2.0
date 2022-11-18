@@ -1,0 +1,21 @@
+@mixin flex($ali, $jcc, $gap) {
+  display: flex;
+  justify-content: $jcc;
+  align-items: $ali;
+  gap: $gap;
+}
+
+$login-bg: linear-gradient(
+  to right bottom,
+  rgb(30, 14, 243, 0.5),
+  rgba(128, 0, 128, 0.5)
+);
+
+$button-default: rgb(13, 153, 235);
+$button-hover-default: rgba(13, 153, 235, 0.7);
+$link: rgb(13, 153, 235);
+$padding: 10px;
+$border: 1px solid black;
+$img-border: 3px solid white;
+$shadow: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.4));
+$box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);

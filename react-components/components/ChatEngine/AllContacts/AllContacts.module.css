@@ -1,0 +1,29 @@
+.all-contacts {
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 30px;
+  height: 100vh;
+}
+.all-contacts .search {
+  width: 100%;
+}
+.all-contacts .users {
+  overflow-y: auto;
+  height: 69.5vh;
+  width: 100%;
+}
+
+@media (max-width: 550px) {
+  .all-contacts {
+    height: 100%;
+  }
+  .all-contacts .users {
+    height: 100%;
+  }
+}/*# sourceMappingURL=AllContacts.module.css.map */

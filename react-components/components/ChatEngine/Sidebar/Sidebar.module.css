@@ -1,0 +1,651 @@
+.sidebar-icon .icon-group {
+  position: relative;
+}
+.sidebar-icon .icon-group .icon-container {
+  position: absolute;
+  padding: 15px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+  background: white;
+  right: 5px;
+  bottom: -1rem;
+  cursor: pointer;
+}
+.sidebar-icon .icon-group .icon-container:hover {
+  -webkit-animation: icon-hover 0.4s forwards;
+          animation: icon-hover 0.4s forwards;
+}
+.sidebar-icon .options {
+  padding: 30px 0;
+}
+.sidebar-icon .options ul {
+  list-style: none;
+  display: block;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+.sidebar-icon .options ul a.active li {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgb(13, 153, 235);
+  border-radius: 100px;
+}
+.sidebar-icon .options ul li {
+  padding: 12px 16px;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  font-weight: bold;
+}
+.sidebar-icon .options ul li:hover, .sidebar-icon .options ul li:focus {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgb(13, 153, 235);
+  border-radius: 100px;
+}
+
+@-webkit-keyframes icon-hover {
+  to {
+    bottom: -10px;
+  }
+}
+
+@keyframes icon-hover {
+  to {
+    bottom: -10px;
+  }
+}
+.sidebar-map-components {
+  padding: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+.sidebar-map-components > h1 {
+  font-size: 30px;
+  margin: 0;
+  padding: 0;
+}
+.sidebar-map-components::-webkit-scrollbar {
+  display: none;
+}
+.sidebar-map-components .all-components {
+  overflow-y: auto;
+  height: 62vh;
+}
+.sidebar-map-components .all-components .large {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+.sidebar-map-components .all-components .medium {
+  display: none;
+}
+.sidebar-map-components .all-user-components {
+  overflow-y: auto;
+  height: 70vh;
+}
+.sidebar-map-components .all-user-components .large {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+.sidebar-map-components .all-user-components .medium {
+  display: none;
+}
+
+.sidebar-map-discussion-components {
+  padding: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+.sidebar-map-discussion-components > h1 {
+  font-size: 30px;
+  margin: 0;
+  padding: 0;
+}
+.sidebar-map-discussion-components::-webkit-scrollbar {
+  display: none;
+}
+.sidebar-map-discussion-components .all-components {
+  overflow-y: auto;
+  height: 70vh;
+}
+.sidebar-map-discussion-components .all-components .large {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+.sidebar-map-discussion-components .all-components .medium {
+  display: none;
+}
+
+.sidebar-user {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  cursor: pointer;
+}
+.sidebar-user:hover {
+  -webkit-animation: user-hover 0.2s forwards;
+          animation: user-hover 0.2s forwards;
+}
+.sidebar-user:hover i {
+  color: rgb(13, 153, 235);
+}
+.sidebar-user .img-container {
+  position: relative;
+}
+.sidebar-user .img-container img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.sidebar-user .img-container .status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: orange;
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  border: 2px solid beige;
+}
+.sidebar-user .img-container .online {
+  background-color: rgb(13, 153, 235);
+}
+.sidebar-user .img-container .offline {
+  background-color: lightgray;
+}
+.sidebar-user .details {
+  width: 100%;
+}
+.sidebar-user .name {
+  font-weight: bold;
+}
+.sidebar-user .about {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-user .user-icon {
+  width: 10%;
+}
+.sidebar-user .user-icon i {
+  transform: scale(1.3);
+}
+
+.no-item {
+  height: 60vh;
+}
+
+.sidebar-user-profile {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  cursor: pointer;
+  min-height: 80px;
+}
+.sidebar-user-profile:hover {
+  -webkit-animation: user-hover 0.2s forwards;
+          animation: user-hover 0.2s forwards;
+}
+.sidebar-user-profile:hover i {
+  color: rgb(13, 153, 235);
+}
+.sidebar-user-profile .img-container {
+  position: relative;
+}
+.sidebar-user-profile .img-container img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.sidebar-user-profile .img-container .status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: orange;
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  border: 2px solid beige;
+}
+.sidebar-user-profile .img-container .online {
+  background-color: rgb(13, 153, 235);
+}
+.sidebar-user-profile .img-container .offline {
+  background-color: lightgray;
+}
+.sidebar-user-profile .details {
+  width: 100%;
+}
+.sidebar-user-profile .name {
+  font-weight: bold;
+}
+.sidebar-user-profile .about {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-user-profile .user-icon {
+  width: 12%;
+}
+.sidebar-user-profile .user-icon i {
+  transform: scale(1.3);
+}
+
+.sidebar-sent-request {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  cursor: pointer;
+  min-height: 80px;
+}
+.sidebar-sent-request:hover {
+  -webkit-animation: user-hover 0.2s forwards;
+          animation: user-hover 0.2s forwards;
+}
+.sidebar-sent-request:hover i {
+  color: rgb(13, 153, 235);
+}
+.sidebar-sent-request .img-container {
+  position: relative;
+}
+.sidebar-sent-request .img-container img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.sidebar-sent-request .img-container .status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: orange;
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  border: 2px solid beige;
+}
+.sidebar-sent-request .img-container .online {
+  background-color: rgb(13, 153, 235);
+}
+.sidebar-sent-request .img-container .offline {
+  background-color: lightgray;
+}
+.sidebar-sent-request .details {
+  width: 100%;
+}
+.sidebar-sent-request .name {
+  font-weight: bold;
+}
+.sidebar-sent-request .about {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-sent-request .icon-container {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+.sidebar-sent-request .delete-icon {
+  width: 40px;
+  border-radius: 50%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  transition: 0.2s;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-sent-request .delete-icon i {
+  color: white;
+  transform: scale(1.3);
+}
+.sidebar-sent-request .delete-icon:hover {
+  background-color: red;
+  transform: scale(1.1);
+}
+
+.sidebar-recieved-request {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  cursor: pointer;
+  min-height: 80px;
+}
+.sidebar-recieved-request:hover {
+  -webkit-animation: user-hover 0.2s forwards;
+          animation: user-hover 0.2s forwards;
+}
+.sidebar-recieved-request:hover i {
+  color: rgb(13, 153, 235);
+}
+.sidebar-recieved-request .img-container {
+  position: relative;
+}
+.sidebar-recieved-request .img-container img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.sidebar-recieved-request .img-container .status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: orange;
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  border: 2px solid beige;
+}
+.sidebar-recieved-request .img-container .online {
+  background-color: rgb(13, 153, 235);
+}
+.sidebar-recieved-request .img-container .offline {
+  background-color: lightgray;
+}
+.sidebar-recieved-request .details {
+  width: 100%;
+}
+.sidebar-recieved-request .name {
+  font-weight: bold;
+}
+.sidebar-recieved-request .about {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-recieved-request .icon-container {
+  width: 60%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+.sidebar-recieved-request .icon-container button {
+  width: auto;
+  height: auto;
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.sidebar-recieved-request .icon-container button:hover {
+  transform: scale(1.1);
+}
+.sidebar-recieved-request .decline-icon {
+  width: 40px;
+  border-radius: 50%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  transition: 0.2s;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-recieved-request .decline-icon i {
+  color: white;
+  transform: scale(1.3);
+}
+.sidebar-recieved-request .decline-icon:hover {
+  background-color: red;
+  transform: scale(1.1);
+}
+.sidebar-recieved-request .accept-icon {
+  width: 40px;
+  border-radius: 50%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  transition: 0.2s;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-recieved-request .accept-icon i {
+  color: white;
+  transform: scale(1.3);
+}
+.sidebar-recieved-request .accept-icon:hover {
+  background-color: lightgreen;
+}
+
+.sidebar-discussion {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  cursor: pointer;
+}
+.sidebar-discussion:hover {
+  -webkit-animation: user-hover 0.2s forwards;
+          animation: user-hover 0.2s forwards;
+}
+.sidebar-discussion:hover i {
+  color: rgb(13, 153, 235);
+}
+.sidebar-discussion .img-container {
+  position: relative;
+}
+.sidebar-discussion .img-container img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.sidebar-discussion .img-container .status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: orange;
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  border: 2px solid beige;
+}
+.sidebar-discussion .img-container .online {
+  background-color: rgb(13, 153, 235);
+}
+.sidebar-discussion .img-container .offline {
+  background-color: lightgray;
+}
+.sidebar-discussion .details {
+  width: 100%;
+}
+.sidebar-discussion .name {
+  font-weight: bold;
+}
+.sidebar-discussion .about {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-discussion .user-icon {
+  width: 10%;
+}
+.sidebar-discussion .user-icon i {
+  transform: scale(1.3);
+}
+.sidebar-discussion .message-count {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgb(13, 153, 235);
+  border: 5px solid beige;
+  padding: 20px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+.sidebar-notification {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  cursor: pointer;
+  padding: 0 10px;
+}
+.sidebar-notification:hover {
+  -webkit-animation: user-hover 0.2s forwards;
+          animation: user-hover 0.2s forwards;
+}
+.sidebar-notification:hover i {
+  color: rgb(13, 153, 235);
+}
+.sidebar-notification .img-container {
+  position: relative;
+}
+.sidebar-notification .img-container img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.sidebar-notification .img-container .status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: orange;
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  border: 2px solid beige;
+}
+.sidebar-notification .img-container .online {
+  background-color: rgb(13, 153, 235);
+}
+.sidebar-notification .img-container .offline {
+  background-color: lightgray;
+}
+.sidebar-notification .details {
+  width: 100%;
+}
+.sidebar-notification .name {
+  font-weight: bold;
+}
+.sidebar-notification .about {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-notification .user-icon {
+  width: 10%;
+}
+.sidebar-notification .user-icon i {
+  transform: scale(1.3);
+}
+.sidebar-notification .icon-container {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+.sidebar-notification .delete-icon {
+  width: 40px;
+  border-radius: 50%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  transition: 0.2s;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.sidebar-notification .delete-icon i {
+  color: white;
+  transform: scale(1.3);
+}
+.sidebar-notification .delete-icon:hover {
+  background-color: red;
+  transform: scale(1.1);
+}
+
+.unviewed {
+  background-color: rgba(13, 153, 235, 0.2);
+}
+
+.notifications:nth-of-type(1) {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+.notifications:nth-last-of-type(1) {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+@-webkit-keyframes user-hover {
+  to {
+    opacity: 1;
+    border-bottom: 2px solid rgb(13, 153, 235);
+  }
+}
+
+@keyframes user-hover {
+  to {
+    opacity: 1;
+    border-bottom: 2px solid rgb(13, 153, 235);
+  }
+}
+@media only screen and (max-width: 850px) {
+  .sidebar-map-components .all-components .large {
+    display: none;
+  }
+  .sidebar-map-components .all-components .medium {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+  }
+  .sidebar-map-discussion-components .all-components .large {
+    display: none;
+  }
+  .sidebar-map-discussion-components .all-components .medium {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+@media (max-width: 550px) {
+  .sidebar-map-components {
+    height: 100%;
+  }
+  .sidebar-map-components .all-components {
+    min-height: 100%;
+    height: auto;
+  }
+  .sidebar-map-components .all-user-components {
+    min-height: 100%;
+    height: auto;
+  }
+}/*# sourceMappingURL=Sidebar.module.css.map */

@@ -1,0 +1,44 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 0;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+.navbar .active i {
+  color: rgb(13, 153, 235);
+}
+.navbar > div {
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3.4rem;
+  flex-direction: column;
+  padding: 40px 0;
+}
+.navbar > div img {
+  width: 60px;
+  border: 3px solid white;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.4));
+  border-radius: 50%;
+  height: 60px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.navbar > div i {
+  color: rgba(13, 153, 235, 0.7);
+  transform: scale(2.1);
+  cursor: pointer;
+}
+.navbar > div i.power {
+  color: rgba(255, 2, 2, 0.7);
+}
+.navbar > div i.power:hover {
+  color: rgb(255, 2, 2);
+}
+.navbar > div i:hover {
+  color: rgb(13, 153, 235);
+}/*# sourceMappingURL=Navbar.module.css.map */

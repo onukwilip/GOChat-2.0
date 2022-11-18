@@ -1,0 +1,1 @@
+{"version":3,"sources":["Requests.module.scss","../../../variables.scss","Requests.module.css"],"names":[],"mappings":"AACA;EACE,gBAAA;ECDA,aAAA;EACA,uBDCsB;ECAtB,mBAAA;EACA,MDD8B;EAC9B,uBAAA;EACA,2BAAA;EACA,sBAAA;EACA,aAAA;EACA,aAAA;AEGF;AFFE;EACE,WAAA;AEIJ;AFFE;EACE,gBAAA;EACA,cAAA;EACA,WAAA;AEIJ;;AFAA;EACE;IACE,YAAA;EEGF;EFFE;IACE,YAAA;EEIJ;AACF","file":"Requests.module.css"}

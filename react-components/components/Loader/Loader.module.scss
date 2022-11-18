@@ -1,0 +1,18 @@
+@import "../../variables.scss";
+
+.loader {
+  height: 100%;
+  @include flex(center, center, 1rem);
+  img {
+    animation: loader 1s infinite forwards;
+  }
+}
+
+@keyframes loader {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

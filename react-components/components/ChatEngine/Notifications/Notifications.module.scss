@@ -1,0 +1,31 @@
+@import "../../../variables.scss";
+.messages {
+  overflow-y: auto;
+  @include flex(center, center, 0);
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: $padding + 20px;
+  //background: gray;
+  height: 100vh; //
+  .search {
+    width: 100%;
+  }
+  .users {
+    overflow-y: auto;
+    // max-height: 69.5vh;
+    height: 69.5vh;
+    width: 100%;
+  }
+}
+
+@media (max-width: 550px) {
+  .messages {
+    height: 100%;
+    //overflow: hidden;
+    .users {
+      height: 100%;
+      //overflow: hidden;
+    }
+  }
+}

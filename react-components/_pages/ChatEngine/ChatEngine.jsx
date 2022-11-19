@@ -129,7 +129,11 @@ const ChatEngine = (props) => {
               </div>
             </div>
             <div className={css["chat-block"]}>
-              <ChatBlock image={user.ProfilePicture} userName={user.UserName} />
+              <ChatBlock
+                image={user.ProfilePicture}
+                userName={user.UserName}
+                userId={props.userId}
+              />
             </div>
           </div>
           <div className={css["mobile-body"]}>{getComponent(path)}</div>

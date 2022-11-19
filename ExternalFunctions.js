@@ -53,13 +53,50 @@ export class Calls {
       const data = await instance
         .get(`${process.env.API_DOMAIN}api/user/validate`)
         .catch((e) => {
-          console.log("Server error", e?.config?.headers, e?.message);
+          // console.log("Server error", e?.config?.headers, e?.message);
           // return e?.response?.status;
         });
 
       if (data) {
-        console.log("Data worked!", data?.data);
+        // console.log("Data worked!", data?.data);
         return data;
+      }
+    };
+    this.getChatRooms = async (instance) => {
+      const response = await instance
+        .get(`${process.env.API_DOMAIN}api/chatroom`)
+        .catch((e) => {});
+
+      if (response) {
+        const chatRooms = response?.data?.Data;
+        return chatRooms;
+      }
+    };
+    this.getUser = async (instance) => {
+      const url = `${process.env.API_DOMAIN}api/user`;
+      const response = await instance.get(url).catch();
+      if (response) {
+        return response?.data;
+      }
+    };
+    this.getDiscussions = async (instance) => {
+      const response = await instance
+        .get(`${process.env.API_DOMAIN}api/discussion`)
+        .catch((e) => {});
+
+      if (response) {
+        const chatRooms = response?.data?.Data;
+        return chatRooms;
+      }
+    };
+    this.getNotifications = async (instance) => {
+      const response = await instance
+        .get(`${process.env.API_DOMAIN}api/notification`)
+        .catch((e) => {});
+
+      if (response) {
+        const notifications = response?.data?.Data;
+        return notifications;
       }
     };
   }

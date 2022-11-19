@@ -37,7 +37,6 @@ const ChatBlock = (props) => {
   const [newChats, setNewChats] = useState([]);
   const [refreshChat, setRefreshChat] = useState(false);
   const url = `${general.domain}api`;
-  const messageBottom = useRef();
 
   const [chatRoomProfile, setChatRoomProfile] = useState({
     ...JSON.parse(
@@ -50,14 +49,12 @@ const ChatBlock = (props) => {
     setLoading(true);
     setError(false);
 
-    // const base64IP = general.toBase64(ip?.data?.IPv4);
-    const base64IP = general.toBase64(general.ipAddress);
     const { ChatRoomID } = {
       ...JSON.parse(sessionStorage.getItem("chatRoom")),
     };
     const base64ChatRoomID = general.toBase64(ChatRoomID);
 
-    const _url = `${url}/chatroom/${userID}/${base64IP}/${base64ChatRoomID}/chatroom`;
+    const _url = `${url}/chatroom/${base64ChatRoomID}/chatroom`;
 
     const response = await axios.get(_url, { ...general.config }).catch((e) => {
       console.log(e);
@@ -120,9 +117,9 @@ const ChatBlock = (props) => {
   };
 
   const submitChatFiles = async (ip, chatID) => {
-    const _url = `${url}/chats/${userID}/${general.toBase64(
-      ip
-    )}/${general.toBase64(chatRoomProfile?.ChatRoomID)}/${chatID}`;
+    const _url = `${url}/chats/${general.toBase64(
+      chatRoomProfile?.ChatRoomID
+    )}/${chatID}`;
     const config = {
       headers: {
         ...general.config?.headers,
@@ -164,7 +161,7 @@ const ChatBlock = (props) => {
   };
 
   const submitChatMessage = async (ip, chat) => {
-    const _url = `${url}/chats/${userID}/${general.toBase64(ip)}`;
+    const _url = `${url}/chats/`;
     const config = {
       ...general.config,
     };
@@ -209,6 +206,7 @@ const ChatBlock = (props) => {
       },
       Author: {
         AuthorID: userID,
+        AuthorName: "Prince",
       },
       ChatroomID: chatRoomProfile?.ChatRoomID,
       ChatID: chatID,
@@ -512,7 +510,7 @@ const ChatBlock = (props) => {
                     : Object.keys(chatRoomProfile).length < 1 &&
                       props.image != null
                     ? props.image
-                    : dummy
+                    : dummy?.src
                 }
                 alt=""
               />
@@ -553,7 +551,9 @@ const ChatBlock = (props) => {
           {loading ? (
             <Loader />
           ) : error ? (
-            <ServerError />
+            <div className={css["no-chat"]}>
+              <ServerError />
+            </div>
           ) : (
             <>
               {chats.length < 1 && <NoChatsAvailable />}

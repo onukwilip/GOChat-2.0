@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import ChatEngine from "../react-components/_pages/ChatEngine/ChatEngine";
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import { General } from "../react-components/context/GeneralContext";
 import axios from "axios";
 import { setCookie, getCookie } from "cookies-next";
@@ -9,7 +9,7 @@ import { Calls, decrypt, encrypt } from "../ExternalFunctions";
 
 export default function ChatEnginePage(props) {
   const general = useContext(General);
-  const userid = getCookie("user-id");
+  const userid = props.userid;
 
   return (
     <div>
@@ -27,7 +27,7 @@ export default function ChatEnginePage(props) {
       </Head>
 
       <>
-        <ChatEngine userid={userid} />
+        <ChatEngine userId={userid} />
       </>
     </div>
   );
@@ -37,6 +37,7 @@ export const getServerSideProps = async ({ req, res }) => {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
   const api = axios.create();
   const refresh_token = decrypt(getCookie("refresh-token", { req, res }));
+  const userid = getCookie("user-id", { req, res });
   let fetching = false;
 
   //API INSTANCE REQUEST INTERCEPTOR
@@ -155,9 +156,18 @@ export const getServerSideProps = async ({ req, res }) => {
 
   const calls = new Calls();
 
-  const data = await calls.verifyUser(api);
+  //VERIFY IF USER IS LOGGED IN
+  const verified = await calls.verifyUser(api);
+  //GET ALL USER CHATROOMS
+  const chatRooms = await calls.getChatRooms(api);
+  //GET USER DETAILS
+  const user = await calls.getUser(api);
+  //GET USER DISCUSSIONS
+  const discussions = await calls.getDiscussions(api);
+  //GET USER NOTIFICATIONS
+  const notifications = await calls.getNotifications(api);
 
-  if (!data) {
+  if (!verified) {
     return {
       redirect: {
         destination: "/login",
@@ -167,6 +177,12 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 
   return {
-    props: {},
+    props: {
+      chatRooms: chatRooms ? chatRooms : [],
+      user: user ? user : {},
+      discussions: discussions ? discussions : [],
+      notifications: notifications ? notifications : [],
+      userid: userid,
+    },
   };
 };

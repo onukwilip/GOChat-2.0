@@ -46,7 +46,7 @@ const Navbar = (props) => {
       <section className={css.navbar}>
         <div className={css["l-side"]}>
           <div className={css["img-container"]}>
-            <img src={props.image ? props.image : dummy} alt="img" />
+            <img src={props.image ? props.image : dummy?.src} alt="img" />
           </div>
 
           <Link

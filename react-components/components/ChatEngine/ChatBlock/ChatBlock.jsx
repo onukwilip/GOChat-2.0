@@ -17,6 +17,7 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import { sendDiscussion } from "../Messages/Messages";
 import { getOne } from "../../ExternalFunctions";
 import { socketDomain } from "../../ExternalFunctions";
+// import { socket } from "../../../_pages/ChatEngine/ChatEngine";
 
 const socket = io.connect(`${socketDomain}/chatroom`);
 
@@ -38,12 +39,38 @@ const ChatBlock = (props) => {
   const [refreshChat, setRefreshChat] = useState(false);
   const url = `${general.domain}api`;
 
-  const [chatRoomProfile, setChatRoomProfile] = useState({
-    ...JSON.parse(
-      typeof window !== "undefined" ? sessionStorage.getItem("chatRoom") : "{}"
-    ),
-  });
+  const [chatRoomProfile, setChatRoomProfile] = useState({});
   const [chats, setChats] = useState([]);
+  let fetchingChats = false;
+
+  const getChats = async () => {
+    if (!fetchingChats) {
+      fetchingChats = true;
+      // console.log("Start", fetchingChats);
+      const _url = `${url}/chats/${general.toBase64(
+        JSON.parse(sessionStorage.getItem("chatRoom"))?.ChatRoomID
+      )}`;
+      const response = await axios
+        .get(_url, { ...general.config })
+        .catch((e) => {
+          console.log("Refresh error", e);
+          fetchingChats = false;
+          // console.log("Error", fetchingChats);
+        });
+
+      if (response) {
+        if (response?.data?.length > 0) {
+          setTimeout(() => {
+            fetchingChats = false;
+          }, 15000);
+          // console.log("Success", fetchingChats);
+          setChats(response?.data);
+          // console.log("Refresh data", response);
+          // return response?.data;
+        }
+      }
+    }
+  };
 
   const getChatRoom = async () => {
     setLoading(true);
@@ -435,25 +462,31 @@ const ChatBlock = (props) => {
       "join",
       JSON.parse(sessionStorage.getItem("chatRoom"))?.ChatRoomID
     );
+    setChatRoomProfile({
+      ...JSON.parse(sessionStorage.getItem("chatRoom")),
+    });
 
     return () => {
       clearInterval(intervalId);
     };
   }, []);
 
-  useEffect(() => {
-    const _url = `${url}/chats/${general.toBase64(
-      JSON.parse(sessionStorage.getItem("chatRoom"))?.ChatRoomID
-    )}`;
-    axios
-      .get(_url, { ...general.config })
-      .then((response) => {
-        if (response?.data?.length > 0) {
-          setChats(response?.data);
-        }
-      })
-      .catch((e) => {});
-  }, [refreshChat]);
+  // useEffect(() => {
+  //   if (!fetchingChats) {
+  //     (async () => {
+  //       fetchingChats = true;
+  //       const data = await getChats().catch((e) => {
+  //         fetchingChats(false);
+  //       });
+  //       if (data) {
+  //         setTimeout(() => {
+  //           fetchingChats = false;
+  //         }, 60000);
+  //       }
+  //     })();
+  //   }
+  //   console.log("I reached here");
+  // }, [refreshChat]);
 
   useEffect(() => {
     socket.on("connection", (message) => {
@@ -461,7 +494,8 @@ const ChatBlock = (props) => {
     });
 
     socket.on("chat_sent", (message) => {
-      setRefreshChat((prev) => !prev);
+      // setRefreshChat((prev) => !prev);
+      getChats();
       console.log("chat_emit recieved and state refreshed");
     });
   }, [socket]);
@@ -565,9 +599,14 @@ const ChatBlock = (props) => {
                         _chat={eachChat}
                         removeChat={removeChat}
                         key={i}
+                        userId={props.userId}
                       />
                     ) : (
-                      <TheirChats _chat={eachChat} key={i} />
+                      <TheirChats
+                        _chat={eachChat}
+                        userId={props.userId}
+                        key={i}
+                      />
                     )}
                   </div>
                 );

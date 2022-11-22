@@ -8,6 +8,7 @@ import dummy from "../../../assets/images/dummy-img.png";
 import NoItem from "../../NoItem/NoItem";
 import axios from "axios";
 import { sendDiscussion } from "../Messages/Messages";
+import { convertToBase64 } from "../../../../ExternalFunctions";
 
 export const SidebarSearch = (props) => {
   const allClickHandler = () => {
@@ -317,7 +318,7 @@ export const ChatRoomProfile = ({
         <img
           src={
             items?.ProfilePicture === null || items?.ProfilePicture === ""
-              ? dummy
+              ? dummy?.src
               : items?.ProfilePicture
           }
           alt=""
@@ -393,7 +394,7 @@ export const Discussion = ({ items, className, addMessagesCount, onClick }) => {
         <img
           src={
             items?.ProfilePicture === null || items?.ProfilePicture === ""
-              ? dummy
+              ? dummy?.src
               : items?.ProfilePicture
           }
           alt=""
@@ -431,7 +432,7 @@ export const Notification = ({
         )}`
       );
     } else if (items?.Target === "requests") {
-      navigate(`/chat/requests/`);
+      navigate.push(`/?tab=requests`);
     }
 
     const response = await axios
@@ -460,7 +461,7 @@ export const Notification = ({
           src={
             items?.IdentityToRender?.IdentityToRenderProfilePicture === null ||
             items?.IdentityToRender?.IdentityToRenderProfilePicture === ""
-              ? dummy
+              ? dummy?.src
               : items?.IdentityToRender?.IdentityToRenderProfilePicture
           }
           alt=""
@@ -492,7 +493,7 @@ export const UserProfile = ({ items, className, addUserIcon, onClick }) => {
   const navigate = useRouter();
 
   const onClickHandler = () => {
-    navigate(`/chat/user/${general.toBase64(items.UserID)}`);
+    navigate.push(`/?tab=user&userid=${convertToBase64(items.UserID)}`);
   };
 
   return (
@@ -504,7 +505,7 @@ export const UserProfile = ({ items, className, addUserIcon, onClick }) => {
         <img
           src={
             items?.ProfilePicture === null || items?.ProfilePicture === ""
-              ? dummy
+              ? dummy?.src
               : items?.ProfilePicture
           }
           alt=""
@@ -537,7 +538,7 @@ export const GroupProfile = ({ items, className, addUserIcon }) => {
   const navigate = useRouter();
 
   const onClickHandler = () => {
-    navigate(`/chat/group/${items?.ChatRoomID}`);
+    navigate.push(`/?tab=group&groupid=${items.ChatRoomID}`);
   };
 
   return (
@@ -549,7 +550,7 @@ export const GroupProfile = ({ items, className, addUserIcon }) => {
         <img
           src={
             items?.ProfilePicture === null || items?.ProfilePicture === ""
-              ? dummy
+              ? dummy?.src
               : items?.ProfilePicture
           }
           alt=""
@@ -575,7 +576,7 @@ export const SentRequest = ({ items, className, userId }) => {
 
   const onDeleteClickHandler = async () => {
     axios
-      .delete(`${url}/${userId}/${items?.ID}`, general.config)
+      .delete(`${url}/${items?.ID}`, general.config)
       .then((response) => {
         // console.log("Delete request", response.data);
         general.setRefreshState((prev) => !prev);
@@ -593,7 +594,7 @@ export const SentRequest = ({ items, className, userId }) => {
           src={
             items?.To?.ProfilePicture === null ||
             items?.To?.ProfilePicture === ""
-              ? dummy
+              ? dummy?.src
               : items?.To?.ProfilePicture
           }
           alt=""
@@ -629,7 +630,7 @@ export const RecievedRequest = ({ items, className, userId }) => {
 
   const onDeleteClickHandler = async () => {
     const response = await axios
-      .delete(`${url}/${userId}/${items?.ID}`, general.config)
+      .delete(`${url}/${items?.ID}`, general.config)
 
       .catch((e) => {});
 
@@ -868,7 +869,7 @@ export const RecievedRequest = ({ items, className, userId }) => {
           src={
             items?.From?.ProfilePicture === null ||
             items?.From?.ProfilePicture === ""
-              ? dummy
+              ? dummy?.src
               : items?.From?.ProfilePicture
           }
           alt=""

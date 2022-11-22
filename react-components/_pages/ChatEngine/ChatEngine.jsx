@@ -14,10 +14,25 @@ import User from "../../components/ChatEngine/User/User";
 import { Request } from "../../components/ChatEngine/Sidebar/Sidebar";
 import Requests from "../../components/ChatEngine/Requests/Requests";
 import Group from "../../components/ChatEngine/Groups/Groups";
+// import io from "socket.io-client";
+
+// export let socket;
+
+// const socketInitializer = async () => {
+//   await fetch("./api/socket");
+//   socket = io();
+
+//   socket.on("connection", () => {
+//     console.log("connected");
+//   });
+// };
+
+// socketInitializer();
 
 const ChatEngine = (props) => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [user, setUser] = useState("");
+  const [width, setWidth] = useState(0);
   const general = useContext(General);
   const userId = props.userId;
   const apiPrefix = general.domain;
@@ -60,13 +75,16 @@ const ChatEngine = (props) => {
     },
     {
       slug: "platform",
-      component: (
-        <ChatBlock
-          image={user.ProfilePicture}
-          userName={user.UserName}
-          userId={props.userId}
-        />
-      ),
+      component:
+        width < 850 ? (
+          <ChatBlock
+            image={user.ProfilePicture}
+            userName={user.UserName}
+            userId={props.userId}
+          />
+        ) : (
+          <Contacts userId={props.userId} />
+        ),
     },
     {
       slug: "requests",
@@ -78,12 +96,18 @@ const ChatEngine = (props) => {
     },
   ];
 
-  const getComponent = (path) => {
+  const getComponent = (path, showChatBlock) => {
     if (Array.isArray(routes)) {
       const componentToRender = routes.filter((route) => route.slug === path);
 
-      if (componentToRender?.length > 0) {
+      if (componentToRender?.length > 0 && showChatBlock) {
         return componentToRender[0]?.component;
+      } else if (componentToRender?.length > 0 && !showChatBlock) {
+        if (componentToRender.slug !== "platform") {
+          return componentToRender[0]?.component;
+        } else {
+          return routes[0]?.component;
+        }
       } else {
         return routes[0]?.component;
       }
@@ -94,6 +118,7 @@ const ChatEngine = (props) => {
 
   useEffect(() => {
     getUser();
+    setWidth(window.innerWidth);
     return () => {};
   }, [general.refreshState]);
 
@@ -125,7 +150,7 @@ const ChatEngine = (props) => {
           <div className={css["body-container"]}>
             <div className={css.sidebar}>
               <div className={css["sidebar-children"]}>
-                {getComponent(path)}
+                {getComponent(path, false)}
               </div>
             </div>
             <div className={css["chat-block"]}>
@@ -136,7 +161,7 @@ const ChatEngine = (props) => {
               />
             </div>
           </div>
-          <div className={css["mobile-body"]}>{getComponent(path)}</div>
+          <div className={css["mobile-body"]}>{getComponent(path, true)}</div>
         </div>
       </section>
     </>

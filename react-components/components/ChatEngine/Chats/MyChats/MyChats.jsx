@@ -19,14 +19,13 @@ export const Icon = (props) => (
   </>
 );
 
-const MyChats = ({ _chat, removeChat }) => {
+const MyChats = ({ _chat, removeChat, userId }) => {
   const [showAllMessage, setShowAllMessage] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const [showAllParentMessage, setShowAllParentMessage] = useState(false);
   const [chat, setChat] = useState({ ..._chat });
   const [showPicker, setShowPicker] = useState(false);
   const general = useContext(General);
-  const userID = localStorage.getItem("UserId");
   const url = `${general.domain}api`;
   const navigate = useRouter();
 
@@ -51,12 +50,7 @@ const MyChats = ({ _chat, removeChat }) => {
   };
 
   const postReaction = async (reaction, emoji) => {
-    const ip = await axios
-      .get("https://geolocation-db.com/json/")
-      .catch((e) => {});
-    const base64IP = general.toBase64(ip?.data?.IPv4);
-
-    const _url = `${url}/chats/${userID}/${base64IP}/reaction`;
+    const _url = `${url}/chats/reaction`;
     const body = {
       ChatID: chat?.ChatID,
       ChatRoomID: chat?.ChatroomID,
@@ -76,14 +70,14 @@ const MyChats = ({ _chat, removeChat }) => {
           ChatID: chat?.ChatID,
           ChatRoomID: chat?.ChatroomID,
           LastMessage: `Reacted ${emoji} to a chat`,
-          MemberID: userID,
+          MemberID: userId,
         });
       } else if (response?.data?.ResponseCode === 204) {
         general.sendDiscussion({
           ChatID: chat?.ChatID,
           ChatRoomID: chat?.ChatroomID,
           LastMessage: `Unreacted to a chat`,
-          MemberID: userID,
+          MemberID: userId,
         });
       }
     }
@@ -95,18 +89,7 @@ const MyChats = ({ _chat, removeChat }) => {
     );
 
     if (confrimDelete) {
-      const ip = await axios
-        .get("https://geolocation-db.com/json/")
-        .catch((e) => {
-          console.log(e);
-          if (e.request) {
-          } else {
-          }
-        });
-
-      const base64IP = general.toBase64(ip?.data?.IPv4);
-
-      const _url = `${url}/chats/${userID}/${base64IP}/${chat?.ChatID}`;
+      const _url = `${url}/chats/${chat?.ChatID}`;
       const response = await axios.delete(_url, general.config).catch((e) => {
         setShowActions(false);
       });
@@ -149,7 +132,7 @@ const MyChats = ({ _chat, removeChat }) => {
       ReactionID: reaction,
       DateCreated: new Date(),
       Author: {
-        AuthorID: userID,
+        AuthorID: userId,
         AuthorName: "sample string 2",
         AuthorImage: "sample string 3",
       },
@@ -287,7 +270,7 @@ const MyChats = ({ _chat, removeChat }) => {
 
   useEffect(() => {
     setChat({ ..._chat });
-  }, []);
+  }, [_chat]);
 
   return (
     <div className={css["my-chats"]} id={chat?.ChatID}>
@@ -295,7 +278,9 @@ const MyChats = ({ _chat, removeChat }) => {
         <div
           className={css["img-container"]}
           onClick={() => {
-            navigate(`/chat/user/${general.toBase64(chat?.Author?.AuthorID)}`);
+            navigate.push(
+              `/?tab=user&userid=${general.toBase64(chat?.Author?.AuthorID)}`
+            );
           }}
         >
           <img src={chat?.Author?.AuthorImage} alt="" />

@@ -133,6 +133,7 @@
   align-items: center;
   gap: 1rem;
   flex-direction: column;
+  padding: 0 10px;
   width: 500px;
   /* Hide default HTML checkbox */
   /* The slider */
@@ -142,7 +143,7 @@
   padding: 10px;
   background-color: rgba(211, 211, 211, 0.2);
   border-radius: 10px;
-  width: 100%;
+  max-width: 95%;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -268,6 +269,26 @@
   border-radius: 50%;
 }
 
+.delete-group .header {
+  text-align: center;
+  color: black;
+  font-size: 19px;
+}
+.delete-group .btn-danger {
+  gap: 4px;
+  background-color: orangered;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+}
+.delete-group .btn-danger i {
+  color: white;
+}
+.delete-group .btn-danger:hover {
+  background-color: rgba(255, 69, 0, 0.7);
+}
+
 .sidebar-user-profile {
   display: flex;
   justify-content: flex-start;
@@ -325,4 +346,10 @@
 }
 .sidebar-user-profile .user-icon i {
   transform: scale(1.3);
+}
+
+@media (max-width: 500px) {
+  .modal .body {
+    margin: 0 10px;
+  }
 }/*# sourceMappingURL=Modal.module.css.map */

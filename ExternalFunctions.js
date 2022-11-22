@@ -5,7 +5,19 @@ const algorithm = process.env.ENCRYPTION_ALGORITHM;
 const secretKey = process.env.ENCRYPTION_KEY;
 
 export const convertToBase64 = (string) => {
-  return new Buffer(string).toString("base64");
+  try {
+    return new Buffer(string).toString("base64");
+  } catch (e) {
+    return string;
+  }
+};
+
+export const convertFromBase64 = (base64String) => {
+  try {
+    return new Buffer(base64String, "base64").toString("ascii");
+  } catch (e) {
+    return base64String;
+  }
 };
 
 export const encrypt = (text) => {
@@ -97,6 +109,45 @@ export class Calls {
       if (response) {
         const notifications = response?.data?.Data;
         return notifications;
+      }
+    };
+    this.getAllUsers = async (instance) => {
+      const response = await instance
+        .get(`${process.env.API_DOMAIN}api/user/all`)
+
+        .catch((e) => {});
+      if (response) {
+        const allUsers = response?.data?.Data;
+        return allUsers;
+      }
+    };
+    this.getAllGroups = async (instance) => {
+      const response = await instance
+        .get(`${process.env.API_DOMAIN}api/chatroom/group`)
+
+        .catch((e) => {});
+
+      if (response) {
+        const allGroups = response?.data?.Data;
+        return allGroups;
+      }
+    };
+    this.getSentRequests = async (instance) => {
+      const response = await instance
+        .get(`${process.env.API_DOMAIN}api/requests/sent`)
+        .catch((e) => {});
+      if (response) {
+        const requests = response.data.Data;
+        return requests;
+      }
+    };
+    this.getRecievedRequests = async (instance) => {
+      const response = await instance
+        .get(`${process.env.API_DOMAIN}api/requests/recieved`)
+        .catch((e) => {});
+      if (response) {
+        const requests = response.data?.Data;
+        return requests;
       }
     };
   }

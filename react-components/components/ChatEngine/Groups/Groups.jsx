@@ -19,15 +19,16 @@ import {
 import NoItem from "../../NoItem/NoItem";
 
 const Profile = ({ chatroom, refreshState, userId }) => {
+  const router = useRouter();
   const [requestStatus, setRequestStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const general = useContext(General);
-  const { groupid } = useParams("groupid");
+  const groupid = router.query?.groupid;
   const _recipientId = groupid;
   const apiPrefix = general.domain;
   const config = general.config;
   const url = apiPrefix + `api`;
-  const [senderId, setSenderId] = useState(userId);
+  const senderId = userId;
   const [disabled, setDisabled] = useState({
     cancelDisabled: false,
     requestDisabled: false,
@@ -36,7 +37,7 @@ const Profile = ({ chatroom, refreshState, userId }) => {
   const getRequestStatus = async () => {
     setLoading(true);
 
-    const _url = `${url}/requests/verify/${senderId}/${_recipientId}/group`;
+    const _url = `${url}/requests/verify/${_recipientId}/group`;
     const response = await axios.get(_url, general.config).catch((e) => {
       console.log(e);
       setLoading(false);
@@ -217,14 +218,15 @@ const Profile = ({ chatroom, refreshState, userId }) => {
 
   useEffect(() => {
     getRequestStatus();
-    setSenderId(userId);
   }, [general.refreshState]);
   return (
     <>
       <div className={css.profile}>
         <div className={css["img-container"]}>
           <img
-            src={chatroom?.ProfilePicture ? chatroom?.ProfilePicture : dummy}
+            src={
+              chatroom?.ProfilePicture ? chatroom?.ProfilePicture : dummy?.src
+            }
             alt=""
           />
         </div>
@@ -271,17 +273,15 @@ const Profile = ({ chatroom, refreshState, userId }) => {
                   )}
                   {requestStatus === 2 && (
                     <>
-                      {chatroom?.ChatRoom_Owner !== userId && (
-                        <div className={css.exit}>
-                          <Button
-                            className={css["btn-danger"]}
-                            onClick={leaveGroup}
-                          >
-                            <i className="fa-solid fa-person-walking-arrow-right"></i>
-                            Exit Group
-                          </Button>
-                        </div>
-                      )}
+                      <div className={css.exit}>
+                        <Button
+                          className={css["btn-danger"]}
+                          onClick={leaveGroup}
+                        >
+                          <i className="fa-solid fa-person-walking-arrow-right"></i>
+                          Exit Group
+                        </Button>
+                      </div>
                     </>
                   )}
                   {requestStatus === 1 && (
@@ -339,8 +339,8 @@ const EditChatroom = ({ chatroom, refreshState }) => {
   const chatroomApiRoute = `${general.domain}api/chatroom/`;
   const config = { ...general.config };
   const [chatroomDetailsDisabled, setChatroomDetailsDisabled] = useState(false);
-  const { groupid } = useParams("groupid");
-
+  const router = useRouter();
+  const groupid = router.query?.groupid;
   const [accountDetails, setAccountDetails] = useState({
     ChatroomName: chatroom?.ChatRoomName,
     ProfilePicture: "",
@@ -510,10 +510,9 @@ const GroupMember = ({
   refreshState,
 }) => {
   const general = useContext(General);
-  const navigate = useRouter();
   const url = `${general.domain}api/chatroom`;
-  const { groupid } = useParams("groupid");
-
+  const router = useRouter();
+  const groupid = router.query?.groupid;
   const onDeleteClickHandler = async () => {
     const _confirm = window["confirm"](
       "Are you sure you want to remove this user from this group"
@@ -573,8 +572,8 @@ const Invitations = (props) => {
   const [sentRequests, setSentRequests] = useState([]);
   const [recievedRequests, setRecievedRequests] = useState([]);
   const url = `${general.domain}api/requests`;
-  const { groupid } = useParams("groupid");
-
+  const router = useRouter();
+  const groupid = router.query?.groupid;
   const getSentInvitations = async () => {
     const response = await axios
       .get(`${url}/sent/${groupid}`, general.config)
@@ -679,7 +678,7 @@ const Invitations = (props) => {
   );
 };
 
-const Settings = ({ chatroom, refreshState }) => {
+const Settings = ({ chatroom, refreshState, userId }) => {
   const general = useContext(General);
 
   const inviteMembers = () => {
@@ -688,6 +687,7 @@ const Settings = ({ chatroom, refreshState }) => {
       values: {
         groupid: chatroom?.ChatRoomID,
         groupName: chatroom?.ChatRoomName,
+        userId: userId,
       },
     };
 
@@ -821,7 +821,7 @@ const Notifications = ({ chatroom }) => {
   );
 };
 
-const Members = ({ chatroom }) => {
+const Members = ({ chatroom, userId }) => {
   const members = [...chatroom?.Members];
   const general = useContext(General);
   const [loading, setLoading] = useState(false);
@@ -833,6 +833,7 @@ const Members = ({ chatroom }) => {
       values: {
         groupid: chatroom?.ChatRoomID,
         groupName: chatroom?.ChatRoomName,
+        userId: userId,
       },
     };
 
@@ -891,6 +892,7 @@ const Group = (props) => {
   const url = apiPrefix + `api`;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [userIsMember, setUserIsMember] = useState(false);
 
   const getChatroomProfile = async () => {
     setLoading(true);
@@ -908,6 +910,15 @@ const Group = (props) => {
     if (data !== null) {
       data?.map((_chatroom) => {
         setChatroom(_chatroom);
+        if (
+          _chatroom?.Members?.filter(
+            (eachMember) => eachMember?.UserID === props.userId
+          )?.length > 0
+        ) {
+          setUserIsMember(true);
+        } else {
+          false;
+        }
         setLoading(false);
         setError(false);
       });
@@ -918,7 +929,24 @@ const Group = (props) => {
     }
   };
 
-  const deleteGroup = () => {};
+  const deleteGroup = () => {
+    const componentToRender = {
+      component: "deleteGroup",
+      values: {
+        groupid: chatroom?.ChatRoomID,
+        groupName: chatroom?.ChatRoomName,
+        userId: props.userId,
+        groupMembers: chatroom?.Members,
+      },
+    };
+
+    sessionStorage.setItem(
+      "componentToRender",
+      JSON.stringify(componentToRender)
+    );
+    general.setModalState("true");
+    sessionStorage.setItem("modalState", "true");
+  };
 
   useEffect(() => {
     getChatroomProfile();
@@ -941,15 +969,28 @@ const Group = (props) => {
       ) : (
         <section className={css.group}>
           <div className={css.profile}>
-            <Profile chatroom={chatroom} refreshState={setRefreshState} />
+            <Profile
+              chatroom={chatroom}
+              refreshState={setRefreshState}
+              userId={props.userId}
+            />
           </div>
           {chatroom?.ChatRoom_Owner === props.userId && (
             <div className={css.setting}>
-              <Settings chatroom={chatroom} refreshState={setRefreshState} />
+              <Settings
+                chatroom={chatroom}
+                refreshState={setRefreshState}
+                userId={props.userId}
+              />
             </div>
           )}
-          <Notifications chatroom={chatroom} />
-          <Members chatroom={chatroom} />
+          {userIsMember && (
+            <>
+              <Notifications chatroom={chatroom} userId={props.userId} />
+              <Members chatroom={chatroom} userId={props.userId} />
+            </>
+          )}
+
           {chatroom?.ChatRoom_Owner === props.userId && (
             <div className={css["danger-zone"]}>
               <h1>Danger Zone !</h1>

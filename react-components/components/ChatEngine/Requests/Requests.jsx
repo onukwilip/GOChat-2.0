@@ -27,7 +27,7 @@ const Requests = (props) => {
 
     if (status === "sent") {
       axios
-        .get(`${baseUrl}/sent/${userId}`, general.config)
+        .get(`${baseUrl}/sent`, general.config)
         .then((response) => {
           console.log(response.data);
           const requests = response.data.Data;
@@ -53,7 +53,7 @@ const Requests = (props) => {
         });
     } else if (status === "recieved") {
       axios
-        .get(`${baseUrl}/recieved/${userId}`, general.config)
+        .get(`${baseUrl}/recieved/`, general.config)
         .then((response) => {
           console.log(response.data);
           const requests = response.data.Data;
@@ -79,7 +79,7 @@ const Requests = (props) => {
         });
     } else {
       axios
-        .get(`${baseUrl}/sent/${userId}`, general.config)
+        .get(`${baseUrl}/sent/`, general.config)
         .then((response) => {
           console.log(response.data);
           const requests = response.data.Data;
@@ -108,7 +108,7 @@ const Requests = (props) => {
 
   const sent = async () => {
     axios
-      .get(`${baseUrl}/sent/${userId}`, general.config)
+      .get(`${baseUrl}/sent`, general.config)
       .then((response) => {
         console.log(response.data);
         const requests = response.data.Data;
@@ -134,7 +134,7 @@ const Requests = (props) => {
   };
   const recieved = async () => {
     axios
-      .get(`${baseUrl}/recieved/${userId}`, general.config)
+      .get(`${baseUrl}/recieved`, general.config)
       .then((response) => {
         console.log(response.data);
         const requests = response.data.Data;

@@ -12,6 +12,7 @@ import { v4 as uuidV4 } from "uuid";
 import { useRouter } from "next/router";
 import dummy from "../../assets/images/dummy-img.png";
 import NoItem from "../NoItem/NoItem";
+import { convertToBase64 } from "../../../ExternalFunctions";
 
 const RemoveFella = ({ items }) => {
   const general = useContext(General);
@@ -27,18 +28,12 @@ const RemoveFella = ({ items }) => {
 
   const blockFella = async () => {
     setDisabled(true);
-    const ip = await axios
-      .get("https://geolocation-db.com/json/")
-      .catch((e) => {
-        console.log(e);
-      });
 
-    const base64IP = general.toBase64(ip?.data?.IPv4);
     const base64Password = general.toBase64(password);
 
     const response = await axios
       .delete(
-        `${url}/${items?.From_ID}/${items?.To_ID}/${base64IP}/${base64Password}/block`,
+        `${url}/${items?.From_ID}/${items?.To_ID}/${base64Password}/block`,
         { ...config }
       )
       .catch((e) => {
@@ -341,7 +336,7 @@ const NewGroup = () => {
         general.setModalState("false");
         sessionStorage.setItem("modalState", "false");
         sessionStorage.removeItem("componentToRender");
-        navigate(`chat/group/${chatroom.chatRoomID}`);
+        navigate.push(`/?tab=group&groupid=${chatroom.chatRoomID}`);
       } else {
         // console.log(
         //   "I got here and the details response code is not " +
@@ -360,7 +355,7 @@ const NewGroup = () => {
         general.setModalState("false");
         sessionStorage.setItem("modalState", "false");
         sessionStorage.removeItem("componentToRender");
-        navigate(`chat/group/${chatroom.chatRoomID}`);
+        navigate.push(`/?tab=group&groupid=${chatroom.chatRoomID}`);
       }
     } else {
       setUserDetailsDisabled(false);
@@ -428,7 +423,7 @@ const UserProfile = ({ items, className, onChange, removeItem }) => {
         <img
           src={
             items?.ProfilePicture === null || items?.ProfilePicture === ""
-              ? dummy
+              ? dummy?.src
               : items?.ProfilePicture
           }
           alt=""
@@ -472,7 +467,7 @@ const InviteMembers = ({ items }) => {
   const [users, setUsers] = useState([]);
   const [itemsToSubmit, setItemsToSubmit] = useState([]);
   const [disabled, setDisabled] = useState();
-  const senderId = localStorage.getItem("UserId");
+  const senderId = items?.userId;
 
   const getMyFellas = async () => {
     const response = await axios
@@ -775,6 +770,110 @@ const InviteMembers = ({ items }) => {
   );
 };
 
+const DeleteGroup = ({ items }) => {
+  const general = useContext(General);
+  const navigate = useRouter();
+  const [password, setPassword] = useState("");
+  const [disabled, setDisabled] = useState(false);
+  const [error, setError] = useState({
+    state: false,
+    message: "",
+  });
+
+  const deleteGroup = async () => {
+    setDisabled(true);
+    const response = await axios
+      .delete(`${general.domain}api/chatroom/${items?.groupid}/delete`, {
+        headers: {
+          "x-password": general.toBase64(password),
+        },
+      })
+      .catch((e) => {
+        setDisabled(false);
+
+        if (e.request) {
+          setError({
+            state: true,
+            message: "Invalid password",
+          });
+          console.log("Error", e);
+        } else {
+          setError({
+            state: true,
+            message: "Invalid password",
+          });
+          console.log("Error", e);
+        }
+      });
+
+    if (response?.status === 200 || response?.status === 204) {
+      setDisabled(false);
+
+      //GET ALL MEMBERS OF THE DELETED GROUP
+      if (Array.isArray(items?.groupMembers)) {
+        items?.groupMembers?.forEach((member) => {
+          const body = [
+            {
+              ID: 0,
+              UserID: member?.UserID,
+              IdentityToRender: {
+                IdentityToRenderID: items?.userId,
+                IdentityToRenderName: null,
+                IdentityToRenderProfilePicture: null,
+                IsOnline: false,
+              },
+              Message: `${items?.groupName} has been deleted by the Admin`,
+              Type: "User",
+              Target: "",
+              Viewed: false,
+            },
+          ];
+
+          //SEND A NOTIFICATION TO THEM THAT THE GROUP HAS BEEN DELETED
+          general.postNotification(body);
+        });
+      }
+
+      general.setModalState("false");
+      sessionStorage.setItem("modalState", "false");
+      sessionStorage.removeItem("componentToRender");
+
+      navigate.replace(`/?tab=user&userid=${general.toBase64(items?.userId)}`);
+    }
+  };
+  return (
+    <>
+      <div className={css["delete-group"]}>
+        <p className={css.header}>
+          Deleting this group can't be undone! Insert your password to confirm
+          it's you!
+        </p>
+        <Form>
+          <FormGroup
+            icon="fa fa-key"
+            placeholder="Enter your password to continue"
+            value={password}
+            type="password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+          {error.state && <p className="error">{error.message}</p>}
+
+          <Button
+            className={css["btn-danger"]}
+            disabled={disabled}
+            onClick={deleteGroup}
+          >
+            <i className="fa-solid fa-ban"></i>
+            {disabled ? "Loading" : "Delete group"}
+          </Button>
+        </Form>
+      </div>
+    </>
+  );
+};
+
 const Modal = () => {
   const general = useContext(General);
   const [componentToRender, setComponentToRender] = useState({
@@ -818,6 +917,11 @@ const Modal = () => {
           {componentToRender.component === "invite" && (
             <>
               <InviteMembers items={componentToRender.values} />
+            </>
+          )}
+          {componentToRender.component === "deleteGroup" && (
+            <>
+              <DeleteGroup items={componentToRender.values} />
             </>
           )}
         </Glassmorphism>

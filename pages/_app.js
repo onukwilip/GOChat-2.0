@@ -3,9 +3,11 @@ import GeneralContext from "../react-components/context/GeneralContext";
 import axios from "axios";
 import { setCookie, getCookie } from "cookies-next";
 import { convertToBase64, decrypt, encrypt } from "../ExternalFunctions";
+import { useEffect } from "react";
 
 //DETERMINES IF THE INTERCEPTOR HAS CALLED THE REFRESH_TOKEN ENDPOINT
 let fetching = false;
+const userid = getCookie("user-id");
 
 //AXIOS RESPONSE INTERCEPTOR
 axios.interceptors.response.use(
@@ -242,7 +244,42 @@ axios.interceptors.request.use(
 //   (err) => Promise.reject(err)
 // );
 
+//USER IS OFFLINE
+const isOffline = async () => {
+  const url = `${process.env.API_DOMAIN}api/user/isOnline`;
+  const body = {
+    isOnline: false,
+    UserID: userid ? userid : "",
+  };
+  const response = await axios.put(url, body).catch((e) => {});
+
+  if (response) {
+    console.log("Is Offline", response.data);
+  }
+};
+
+//USER IS ONLINE
+const isOnline = async () => {
+  const url = `${process.env.API_DOMAIN}api/user/isOnline`;
+  const body = {
+    isOnline: true,
+    UserID: userid ? userid : "",
+  };
+  const response = await axios.put(url, body).catch((e) => {});
+
+  if (response) {
+    console.log("Is Online", response.data);
+  }
+};
+
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    isOnline();
+    return () => {
+      isOffline();
+    };
+  }, []);
+
   return (
     <GeneralContext>
       <Component {...pageProps} />

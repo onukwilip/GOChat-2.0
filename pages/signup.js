@@ -6,6 +6,12 @@ const SignUp = () => {
   return (
     <>
       <Head>
+        <title>GO Chat</title>
+        <meta
+          name="description"
+          content="Welcome to GOChat sign up to connect with your friends all over the world 😁"
+        />
+        <link rel="icon" href="\icons8-chat-64 (1).png" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"

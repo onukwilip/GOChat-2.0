@@ -10,6 +10,7 @@ import Loader from "../../Loader/Loader";
 import ServerError from "../../ServerError/ServerError";
 import { PostNotification } from "../Notifications/Notifications";
 import { ChatRoomProfile } from "../Sidebar/Sidebar";
+import { convertFromBase64 } from "../../../../ExternalFunctions";
 
 const Profile = ({ user, userId }) => {
   const [requestStatus, setRequestStatus] = useState("");
@@ -17,11 +18,11 @@ const Profile = ({ user, userId }) => {
   const general = useContext(General);
   const router = useRouter();
   const userid = router.query?.userid;
-  const _recipientId = general.fromBase64(userid);
+  const _recipientId = convertFromBase64(userid);
   const apiPrefix = general.domain;
   const config = general.config;
   const url = apiPrefix + `api`;
-  const [senderId, setSenderId] = useState(userId);
+  const senderId = userId;
   const [disabled, setDisabled] = useState({
     cancelDisabled: false,
     requestDisabled: false,
@@ -141,19 +142,7 @@ const Profile = ({ user, userId }) => {
       cancelDisabled: true,
     }));
 
-    const ip = await axios
-      .get("https://geolocation-db.com/json/")
-      .catch((e) => {
-        setDisabled((prev) => ({
-          ...prev,
-          cancelDisabled: false,
-        }));
-        console.log(e);
-      });
-
-    const _url = `${url}/requests/delete/${senderId}/${general.toBase64(
-      ip.data.IPv4
-    )}/${_recipientId}`;
+    const _url = `${url}/requests/delete/${senderId}/${_recipientId}`;
 
     const response = await axios.delete(_url, general.config).catch((e) => {
       setDisabled((prev) => ({
@@ -210,15 +199,8 @@ const Profile = ({ user, userId }) => {
   };
 
   const ignoreFella = async () => {
-    const ip = await axios
-      .get("https://geolocation-db.com/json/")
-      .catch((e) => {
-        console.log(e);
-      });
-
-    const base64IP = general.toBase64(ip?.data?.IPv4);
     const response = await axios.delete(
-      `${url}/chatroom/${senderId}/${_recipientId}/${base64IP}/ignore`,
+      `${url}/chatroom/${senderId}/${_recipientId}/ignore`,
       { ...config }
     );
 
@@ -247,15 +229,8 @@ const Profile = ({ user, userId }) => {
   };
 
   const unIgnoreFella = async () => {
-    const ip = await axios
-      .get("https://geolocation-db.com/json/")
-      .catch((e) => {
-        console.log(e);
-      });
-
-    const base64IP = general.toBase64(ip?.data?.IPv4);
     const response = await axios.post(
-      `${url}/chatroom/${senderId}/${_recipientId}/${base64IP}/unignore`,
+      `${url}/chatroom/${senderId}/${_recipientId}/unignore`,
       {},
       general.config
     );
@@ -285,7 +260,6 @@ const Profile = ({ user, userId }) => {
 
   useEffect(() => {
     getRequestStatus();
-    setSenderId(userId);
   }, [general.refreshState]);
   return (
     <>
@@ -787,7 +761,9 @@ const Groups = ({ userid }) => {
                   items={eachGroup}
                   addUserIcon={false}
                   onClick={() => {
-                    navigate(`/chat/group/${eachGroup?.ChatRoomID}`);
+                    navigate.push(
+                      `/?tab=group&groupid=${eachGroup?.ChatRoomID}`
+                    );
                   }}
                 />
               ))}
@@ -807,7 +783,7 @@ const User = (props) => {
   const general = useContext(General);
   const router = useRouter();
   const userid = router.query?.userid;
-  const _userid = general.fromBase64(userid);
+  const _userid = convertFromBase64(userid);
   const apiPrefix = general.domain;
   const config = general.config;
   const url = apiPrefix + `api`;
@@ -817,8 +793,6 @@ const User = (props) => {
   const getUser = async () => {
     setLoading(true);
     setError(false);
-
-    const ip = await axios.get("https://geolocation-db.com/json/");
 
     const _url = `${url}/user/${_userid}`;
     const res = await axios.get(_url, general.config).catch((e) => {
@@ -857,7 +831,7 @@ const User = (props) => {
       ) : (
         <section className={css.user}>
           <div className={css.profile}>
-            <Profile user={user} />
+            <Profile user={user} userId={props.userId} />
           </div>
           {user.UserID === props.userId && (
             <div className={css.setting}>

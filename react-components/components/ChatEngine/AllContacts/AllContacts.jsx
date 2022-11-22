@@ -17,7 +17,7 @@ const AllContacts = (props) => {
   const general = useContext(General);
   const apiPrefix = general.domain;
   const config = general.config;
-  const userUrl = apiPrefix + `api/user/all/${userId}`;
+  const userUrl = apiPrefix + `api/user/all`;
   const chatroomUrl = apiPrefix + `api/chatroom/`;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -25,11 +25,10 @@ const AllContacts = (props) => {
   const getAllUsers = async () => {
     setLoading(true);
     setError(false);
-    const ip = await axios.get("https://geolocation-db.com/json/");
 
     if (status === "fellas") {
       axios
-        .get(`${userUrl}/${general.toBase64(ip.data.IPv4)}`, {
+        .get(`${userUrl}`, {
           ...general.config,
         })
         .then((response) => {
@@ -76,7 +75,7 @@ const AllContacts = (props) => {
         });
     } else {
       axios
-        .get(`${userUrl}/${general.toBase64(ip.data.IPv4)}`, general.config)
+        .get(`${userUrl}`, general.config)
         .then((response) => {
           console.log(response.data);
           const users = response.data.Data;

@@ -9,6 +9,7 @@ import Loader from "../../Loader/Loader";
 import ServerError from "../../ServerError/ServerError";
 import { io } from "socket.io-client";
 import { socketDomain } from "../../ExternalFunctions";
+// import { socket as discussionSocket } from "../../../_pages/ChatEngine/ChatEngine";
 
 const discussionSocket = io.connect(`${socketDomain}/discussion`);
 
@@ -128,7 +129,7 @@ const Messages = (props) => {
             addMessagesCount={true}
             onClick={() => {}}
             onMediumClick={() => {
-              navigate("/chat/platform");
+              navigate.push("/?tab=platform");
             }}
           />
         )}

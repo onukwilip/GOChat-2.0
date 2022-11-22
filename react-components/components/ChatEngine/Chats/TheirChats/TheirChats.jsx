@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import css from "./TheirChats.module.css";
 import image from "../../../../assets/images/dummy-img.png";
 import Glassmorphism from "../../../Glassmorphism/Glassmorphism";
@@ -22,12 +22,11 @@ export const Reaction = ({ reaction, eachReaction, onClick }) => {
   );
 };
 
-const TheirChats = ({ _chat }) => {
+const TheirChats = ({ _chat, userId }) => {
   const [showAllMessage, setShowAllMessage] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const [chat, setChat] = useState({ ..._chat });
   const [showPicker, setShowPicker] = useState(false);
-  const userID = localStorage.getItem("UserId");
   const general = useContext(General);
   const url = `${general.domain}api`;
   const navigate = useRouter();
@@ -53,12 +52,7 @@ const TheirChats = ({ _chat }) => {
   };
 
   const postReaction = async (reaction, emoji) => {
-    const ip = await axios
-      .get("https://geolocation-db.com/json/")
-      .catch((e) => {});
-    const base64IP = general.toBase64(ip?.data?.IPv4);
-
-    const _url = `${url}/chats/${userID}/${base64IP}/reaction`;
+    const _url = `${url}/chats/reaction`;
     const body = {
       ChatID: chat?.ChatID,
       ChatRoomID: chat?.ChatroomID,
@@ -79,14 +73,14 @@ const TheirChats = ({ _chat }) => {
           ChatID: chat?.ChatID,
           ChatRoomID: chat?.ChatroomID,
           LastMessage: `Reacted ${emoji} to a chat`,
-          MemberID: userID,
+          MemberID: userId,
         });
       } else if (response?.data?.ResponseCode === 204) {
         general.sendDiscussion({
           ChatID: chat?.ChatID,
           ChatRoomID: chat?.ChatroomID,
           LastMessage: `Unreacted to a chat`,
-          MemberID: userID,
+          MemberID: userId,
         });
       }
     }
@@ -101,7 +95,7 @@ const TheirChats = ({ _chat }) => {
       ReactionID: reaction,
       DateCreated: new Date(),
       Author: {
-        AuthorID: userID,
+        AuthorID: userId,
         AuthorName: "sample string 2",
         AuthorImage: "sample string 3",
       },
@@ -237,13 +231,19 @@ const TheirChats = ({ _chat }) => {
     // console.log("addOrRemoveReaction() was called");
   };
 
+  useEffect(() => {
+    setChat({ ..._chat });
+  }, [_chat]);
+
   return (
     <div className={css["their-chats"]} id={chat?.ChatID}>
       <div className={css.main}>
         <div
           className={css["img-container"]}
           onClick={() => {
-            navigate(`/chat/user/${general.toBase64(chat?.Author?.AuthorID)}`);
+            navigate.push(
+              `/?tab=user&userid=${general.toBase64(chat?.Author?.AuthorID)}`
+            );
           }}
         >
           <img src={chat?.Author?.AuthorImage} alt="" />

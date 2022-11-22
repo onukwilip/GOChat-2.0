@@ -109,12 +109,13 @@
 .invite {
   @include flex(center, center, 1rem);
   flex-direction: column;
+  padding: 0 10px;
   width: 500px;
   .members-to-add {
     padding: $padding;
     background-color: rgba(lightgray, 0.2);
     border-radius: $padding;
-    width: 100%;
+    max-width: 95%;
     @include flex(flex-start, flex-start, 1rem);
     overflow-x: auto;
 
@@ -253,6 +254,25 @@
   }
 }
 
+.delete-group {
+  .header {
+    text-align: center;
+    color: black;
+    font-size: 19px;
+  }
+  .btn-danger {
+    gap: 4px;
+    background-color: orangered;
+    @include flex(center, center, 0.3rem);
+    i {
+      color: white;
+    }
+    &:hover {
+      background-color: rgba(orangered, 0.7);
+    }
+  }
+}
+
 .sidebar-user-profile {
   @include flex(center, flex-start, 1rem);
   width: 100%;
@@ -305,6 +325,14 @@
     width: 12%;
     i {
       transform: scale(1.3);
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .modal {
+    .body {
+      margin: 0 10px;
     }
   }
 }

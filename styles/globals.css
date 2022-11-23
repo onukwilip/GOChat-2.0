@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: Gumela;
-  src: url("./fonts/Gumela\ Regular.otf");
+  src: url("/fonts/Gumela\ Regular.otf");
 }
 * {
   font-family: "Gumela", "poppins", "san-serif";

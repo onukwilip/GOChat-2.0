@@ -165,24 +165,24 @@ export const getServerSideProps = async ({ req, res }) => {
 
   //VERIFY IF USER IS LOGGED IN
   const verified = await calls.verifyUser(api).catch((e) => null);
-  //GET ALL USER CHATROOMS
-  const chatRooms = await calls.getChatRooms(api).catch((e) => null);
-  //GET USER DETAILS
-  const user = await calls.getUser(api).catch((e) => null);
-  //GET USER DISCUSSIONS
-  const discussions = await calls.getDiscussions(api).catch((e) => null);
-  //GET USER NOTIFICATIONS
-  const notifications = await calls.getNotifications(api).catch((e) => null);
-  //GET ALL USERS
-  const allUsers = await calls.getAllUsers(api).catch((e) => null);
-  //GET ALL PUBLIC GROUPS
-  const allGroups = await calls.getAllGroups(api).catch((e) => null);
-  //GET USER SENT REQUESTS
-  const sentRequests = await calls.getSentRequests(api).catch((e) => null);
-  //GET USER RECIEVED REQUESTS
-  const recievedRequests = await calls
-    .getRecievedRequests(api)
-    .catch((e) => null);
+  // //GET ALL USER CHATROOMS
+  // const chatRooms = await calls.getChatRooms(api).catch((e) => null);
+  // //GET USER DETAILS
+  // const user = await calls.getUser(api).catch((e) => null);
+  // //GET USER DISCUSSIONS
+  // const discussions = await calls.getDiscussions(api).catch((e) => null);
+  // //GET USER NOTIFICATIONS
+  // const notifications = await calls.getNotifications(api).catch((e) => null);
+  // //GET ALL USERS
+  // const allUsers = await calls.getAllUsers(api).catch((e) => null);
+  // //GET ALL PUBLIC GROUPS
+  // const allGroups = await calls.getAllGroups(api).catch((e) => null);
+  // //GET USER SENT REQUESTS
+  // const sentRequests = await calls.getSentRequests(api).catch((e) => null);
+  // //GET USER RECIEVED REQUESTS
+  // const recievedRequests = await calls
+  //   .getRecievedRequests(api)
+  //   .catch((e) => null);
 
   if (!verified) {
     return {
@@ -195,14 +195,14 @@ export const getServerSideProps = async ({ req, res }) => {
 
   return {
     props: {
-      chatRooms: chatRooms ? chatRooms : [],
-      user: user ? user : {},
-      discussions: discussions ? discussions : [],
-      notifications: notifications ? notifications : [],
-      allUsers: allUsers ? allUsers : [],
-      allGroups: allGroups ? allGroups : [],
-      sentRequests: sentRequests ? sentRequests : [],
-      recievedRequests: recievedRequests ? recievedRequests : [],
+      // chatRooms: chatRooms ? chatRooms : [],
+      // user: user ? user : {},
+      // discussions: discussions ? discussions : [],
+      // notifications: notifications ? notifications : [],
+      // allUsers: allUsers ? allUsers : [],
+      // allGroups: allGroups ? allGroups : [],
+      // sentRequests: sentRequests ? sentRequests : [],
+      // recievedRequests: recievedRequests ? recievedRequests : [],
       userid: userid,
     },
   };

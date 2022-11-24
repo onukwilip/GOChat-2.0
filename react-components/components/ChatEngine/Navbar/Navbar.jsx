@@ -13,30 +13,35 @@ const Navbar = (props) => {
   const apiPrefix = general.domain;
   const config = general.config;
   const userId = props.userId;
-  const url = apiPrefix + `api/user/IPAddress/`;
+  const url =
+    apiPrefix + `api/user/logout/${general.toBase64(process.env.CLIENT_ID)}`;
 
-  //GET IP ADDRESS OF USER
-  const getUserIPAddress = () => {
-    const ipUrl = "https://geolocation-db.com/json/";
-    axios
-      .get(ipUrl)
-      .then((res) => {
-        //Call my API to remove IP address from database
-        logOut(res.data.IPv4);
-      })
-      .catch((e) => {});
-  };
+  //LOGS USER OUT OF THE APPLICATION
+  const logOut = async () => {
+    const loggedOut = await axios.delete(`${url}`).catch((e) => {
+      console.log("LogOut error:", e);
+      navigate.replace("/login");
+    });
 
-  const logOut = (ipAddress) => {
-    // const userId = localStorage.getItem("UserId");
-    axios
-      .delete(`${url}${userId}/${general.toBase64(ipAddress)}`)
-      .then((res) => {
-        console.log("User logged out successfully ", res.data);
-      })
-      .catch();
-    localStorage.removeItem("UserId");
-    navigate.replace("/login");
+    if (loggedOut) {
+      console.log("LogOut successfull:", loggedOut);
+
+      const removeCookies = await axios
+        .delete(`./api/setcookie`, {
+          headers: {
+            "x-key": "*",
+          },
+        })
+        .catch((e) => {
+          console.log("Cookie error:", e);
+          navigate.replace("/login");
+        });
+
+      if (removeCookies) {
+        console.log("Removed cookies:", removeCookies);
+        navigate.replace("/login");
+      }
+    }
   };
 
   useEffect(() => {}, []);
@@ -106,7 +111,7 @@ const Navbar = (props) => {
 
           <div
             className={css["power-container"]}
-            onClick={getUserIPAddress}
+            onClick={logOut}
             title="log out"
           >
             <i className={`fa-solid fa-power-off ${css.power}`}></i>

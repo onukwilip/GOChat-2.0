@@ -616,7 +616,7 @@
     border-bottom: 2px solid rgb(13, 153, 235);
   }
 }
-@media only screen and (max-width: 850px) {
+@media (max-width: 1150px) {
   .sidebar-map-components .all-components .large {
     display: none;
   }

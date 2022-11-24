@@ -96,6 +96,7 @@ export const ChatRoomMapComponents = (props) => {
                   className={css.large}
                   addUserIcon={props.addUserIcon}
                   addMessagesCount={props.addMessagesCount}
+                  key={i}
                   chatroom={true}
                 />
                 <ChatRoomProfile
@@ -104,6 +105,7 @@ export const ChatRoomMapComponents = (props) => {
                   className={css.medium}
                   addUserIcon={props.addUserIcon}
                   addMessagesCount={props.addMessagesCount}
+                  key={eachItem?.ChatRoomID}
                   chatroom={true}
                 />
               </>
@@ -136,6 +138,7 @@ export const DisscussionMapComponents = (props) => {
                   addUserIcon={props.addUserIcon}
                   className={css.large}
                   addMessagesCount={props.addMessagesCount}
+                  key={i}
                 />
                 <Discussion
                   onClick={props.onMediumClick}
@@ -143,6 +146,7 @@ export const DisscussionMapComponents = (props) => {
                   addUserIcon={props.addUserIcon}
                   className={css.medium}
                   addMessagesCount={props.addMessagesCount}
+                  key={eachItem?.ChatRoomID}
                 />
               </>
             );
@@ -177,6 +181,7 @@ export const NotificationMapComponents = (props) => {
                     css.notifications
                   }`}
                   setStates={props.setStates}
+                  key={i}
                   addDeleteIcon={props.addDeleteIcon}
                 />
               </>
@@ -207,6 +212,7 @@ export const UserMapComponents = (props) => {
                   <GroupProfile
                     items={eachItem}
                     addUserIcon={props.addUserIcon}
+                    key={i}
                   />
                 </>
               );
@@ -216,6 +222,7 @@ export const UserMapComponents = (props) => {
                   <UserProfile
                     items={eachItem}
                     addUserIcon={props.addUserIcon}
+                    key={i}
                   />
                 </>
               );
@@ -252,6 +259,7 @@ export const RequestMapComponents = (props) => {
                     <SentRequest
                       onClick={props.onClick}
                       userId={props.userId}
+                      key={i}
                       items={eachItem}
                     />
                   </>
@@ -261,6 +269,7 @@ export const RequestMapComponents = (props) => {
                     <RecievedRequest
                       onClick={props.onClick}
                       userId={props.userId}
+                      key={i}
                       items={eachItem}
                     />
                   </>
@@ -269,6 +278,7 @@ export const RequestMapComponents = (props) => {
                   <>
                     <SentRequest
                       onClick={props.onClick}
+                      key={i}
                       userId={props.userId}
                       items={eachItem}
                     />
@@ -426,8 +436,8 @@ export const Notification = ({
   const onClickHandler = async () => {
     // console.log(items);
     if (items?.Target === "users") {
-      navigate(
-        `/chat/user/${general.toBase64(
+      navigate.push(
+        `/?tab=user&userid=${general.toBase64(
           items?.IdentityToRender.IdentityToRenderID
         )}`
       );

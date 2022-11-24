@@ -7,6 +7,9 @@ import axios from "axios";
 import { General } from "../../../context/GeneralContext";
 import Loader from "../../Loader/Loader";
 import ServerError from "../../ServerError/ServerError";
+import { io } from "socket.io-client";
+import { socketDomain } from "../../ExternalFunctions";
+import { Calls } from "../../../../ExternalFunctions";
 
 export const PostNotification = async (body) => {
   const general = useContext(General);
@@ -18,6 +21,12 @@ export const PostNotification = async (body) => {
 
   console.log(response?.data);
   console.log("Notification sent successfully");
+};
+
+export const notificationSocket = io.connect(`${socketDomain}/notification`);
+
+export const notify = (userid) => {
+  notificationSocket.emit("notify", userid);
 };
 
 const Notifications = (props) => {
@@ -32,6 +41,7 @@ const Notifications = (props) => {
   const url = apiPrefix + `api/notification`;
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  let fetching = false;
 
   const getNotifications = () => {
     if (status === "all") {
@@ -143,9 +153,45 @@ const Notifications = (props) => {
     }
   };
 
+  const refreshNotifications = async () => {
+    if (!fetching) {
+      fetching = true;
+      const response = await axios.get(url).catch((e) => {
+        fetching = false;
+      });
+      if (
+        Array.isArray(response?.data?.Data) &&
+        response?.data?.Data?.length > 0
+      ) {
+        const newNotifications = [...response?.data?.Data];
+        console.log("Data recieved", newNotifications);
+
+        setAllNotifications(newNotifications);
+        setNotifications(newNotifications);
+
+        setTimeout(() => {
+          fetching = false;
+        }, 15000);
+      }
+    }
+  };
+
   useEffect(() => {
     getNotifications();
+    notificationSocket.emit("join", userId);
   }, []);
+
+  useEffect(() => {
+    notificationSocket.on("connection", (message) => {
+      console.log(message);
+      notificationSocket.emit("join", userId);
+    });
+    notificationSocket.on("notification", () => {
+      console.log("User recieved a notification");
+
+      refreshNotifications();
+    });
+  }, [notificationSocket]);
 
   return (
     <div className={css.messages}>

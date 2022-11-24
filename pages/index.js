@@ -7,10 +7,13 @@ import axios from "axios";
 import { setCookie, getCookie } from "cookies-next";
 import { Calls, decrypt, encrypt } from "../ExternalFunctions";
 import Modal from "../react-components/components/Modal/Modal";
+import requestIp from "request-ip";
 
 export default function ChatEnginePage(props) {
   const general = useContext(General);
   const userid = props.userid;
+
+  console.log("IP", props.ip);
 
   return (
     <>
@@ -184,6 +187,11 @@ export const getServerSideProps = async ({ req, res }) => {
   //   .getRecievedRequests(api)
   //   .catch((e) => null);
 
+  //GET USER'S IP ADDRESS
+  const ip = requestIp.getClientIp(req);
+
+  console.log("IP address", ip);
+
   if (!verified) {
     return {
       redirect: {
@@ -204,6 +212,7 @@ export const getServerSideProps = async ({ req, res }) => {
       // sentRequests: sentRequests ? sentRequests : [],
       // recievedRequests: recievedRequests ? recievedRequests : [],
       userid: userid,
+      ip: ip ? ip : "",
     },
   };
 };

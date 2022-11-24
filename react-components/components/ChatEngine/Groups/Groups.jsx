@@ -8,7 +8,6 @@ import { Form, FormGroup } from "../../Form/Form";
 import { Button } from "../../Button/Button";
 import Loader from "../../Loader/Loader";
 import ServerError from "../../ServerError/ServerError";
-import { PostNotification } from "../Notifications/Notifications";
 import {
   ChatRoomProfile,
   Notification,
@@ -17,6 +16,14 @@ import {
   UserProfile,
 } from "../Sidebar/Sidebar";
 import NoItem from "../../NoItem/NoItem";
+import { io } from "socket.io-client";
+import { socketDomain } from "../../ExternalFunctions";
+// import { notificationSocket } from "../Notifications/Notifications";
+
+const groupNotificationSocket = io.connect(`${socketDomain}/notification`);
+export const groupNotify = (userid) => {
+  groupNotificationSocket.emit("notify", userid);
+};
 
 const Profile = ({ chatroom, refreshState, userId }) => {
   const router = useRouter();
@@ -762,6 +769,8 @@ const Notifications = ({ chatroom }) => {
   const url = `${general.domain}api/notification`;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const chatroomId = chatroom?.ChatRoomID;
+  let fetching = false;
 
   const getNotifications = async () => {
     setLoading(true);
@@ -785,10 +794,47 @@ const Notifications = ({ chatroom }) => {
       // console.log(response);
     }
   };
+  const refreshNotifications = async () => {
+    if (!fetching) {
+      fetching = true;
+      const response = await axios
+        .get(`${url}/${chatroom?.ChatRoomID}/group`)
+        .catch((e) => {
+          fetching = false;
+        });
+      if (
+        Array.isArray(response?.data?.Data) &&
+        response?.data?.Data?.length > 0
+      ) {
+        const newNotifications = [...response?.data?.Data];
+        console.log("Data recieved", newNotifications);
+
+        setNotifications(newNotifications);
+
+        setTimeout(() => {
+          fetching = false;
+        }, 15000);
+      }
+    }
+  };
 
   useEffect(() => {
     getNotifications();
+    groupNotificationSocket.emit("join", chatroomId);
   }, []);
+
+  useEffect(() => {
+    groupNotificationSocket.on("connection", (message) => {
+      console.log(message);
+      groupNotificationSocket.emit("join", chatroomId);
+    });
+    groupNotificationSocket.on("notification", () => {
+      console.log("User recieved a notification");
+
+      refreshNotifications();
+    });
+  }, [groupNotificationSocket]);
+
   return (
     <div className={css.notifications}>
       <div className={css.header}>

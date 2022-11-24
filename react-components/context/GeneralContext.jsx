@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
+import { groupNotify } from "../components/ChatEngine/Groups/Groups";
+import { notify } from "../components/ChatEngine/Notifications/Notifications";
 
 //C:\NodeJsPractice\go-chat-node-server
 
@@ -153,6 +155,13 @@ const GeneralContext = (props) => {
     });
 
     console.log(response?.data);
+    if (Array.isArray(body)) {
+      body.forEach((user) => {
+        notify(user?.UserID);
+        groupNotify(user?.UserID);
+        console.log("Notification socket pinged successfully");
+      });
+    }
     console.log("Notification sent successfully");
   };
 

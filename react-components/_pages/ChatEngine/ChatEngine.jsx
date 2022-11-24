@@ -76,7 +76,7 @@ const ChatEngine = (props) => {
     {
       slug: "platform",
       component:
-        width < 850 ? (
+        width < 1150 ? (
           <ChatBlock
             image={user.ProfilePicture}
             userName={user.UserName}

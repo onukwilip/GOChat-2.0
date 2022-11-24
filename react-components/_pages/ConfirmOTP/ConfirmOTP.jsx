@@ -16,6 +16,7 @@ const ConfirmOTP = () => {
   const [email, setEmail] = useState("");
   const [invalidOTP, setInvalidOTP] = useState(false);
   const [OTPDetails, setOTPDetails] = useState("");
+  const [validating, setValidating] = useState(false);
 
   const apiPrefix = general.domain;
   const url = apiPrefix + `api/user/`;
@@ -74,13 +75,18 @@ const ConfirmOTP = () => {
   };
 
   const validateOTP = async () => {
+    setValidating(true);
+    setInvalidOTP(false);
     const _url = url + `confirmOTP`;
     const body = {
       Email: OTPDetails?.email,
       OTP: OTP,
     };
 
-    const response = await axios.put(_url, body, config).catch((e) => {});
+    const response = await axios.put(_url, body, config).catch((e) => {
+      setValidating(false);
+      setInvalidOTP(true);
+    });
 
     if (response) {
       if (response.data) {
@@ -99,8 +105,12 @@ const ConfirmOTP = () => {
               "access-token",
               encrypt(tokenResponse?.data?.access_token)
             );
+            setValidating(false);
+
             navigate.replace("/");
           } else {
+            setValidating(false);
+
             console.log("Could not get token");
           }
         }
@@ -108,6 +118,7 @@ const ConfirmOTP = () => {
         else {
         }
       } else {
+        setValidating(false);
         setInvalidOTP(true);
       }
     }
@@ -129,7 +140,7 @@ const ConfirmOTP = () => {
           console.log("OTP sent successfully...");
           console.log("Send OTP", res.data);
         } else {
-          console.log("An error occurred...");
+          console.log(`OTP could not be sent to ${OTPDetails?.email}...`);
         }
       })
       .catch((e) => {
@@ -208,21 +219,6 @@ const ConfirmOTP = () => {
     }
   };
 
-  // const generateToken = async () => {
-  //   const url = `${apiPrefix}token`;
-  //   const params = new URLSearchParams();
-  //   params.append(`username`, OTPDetails?.userid);
-  //   params.append(`password`, general.fromBase64(OTPDetails?.password));
-  //   params.append(`grant_type`, "password");
-
-  //   const response = await axios.post(url, params).catch((e) => {
-  //     console.log(e);
-  //   });
-  //   console.log("Token", response);
-
-  //   return response;
-  // };
-
   const generateToken = async () => {
     const url = `${process.env.CLIENT_DOMAIN}api/access_token`;
 
@@ -293,7 +289,9 @@ const ConfirmOTP = () => {
             />
             {invalidOTP && <p className="error">Invalid OTP...</p>}
             <div className={css["action"]}>
-              <Button>Confirm OTP</Button>
+              <Button disabled={validating}>
+                {validating ? "Loading..." : "Confirm OTP"}
+              </Button>
               {!disabled && (
                 <Button type="button" disabled={disabled} onClick={sendOTP}>
                   Resend

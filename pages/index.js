@@ -139,7 +139,7 @@ export const getServerSideProps = async ({ req, res }) => {
           //SET THE FETCHING TO FALSE AFTER 1 MINUTE
           setTimeout(() => {
             fetching = false;
-          }, 60000);
+          }, 12000);
           //RESEND THE REQUEST
           return api(originalConfig);
         } else {

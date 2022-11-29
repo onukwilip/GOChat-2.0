@@ -9,12 +9,134 @@ import { useEffect } from "react";
 let fetching = false;
 const userid = getCookie("user-id");
 
+// //AXIOS RESPONSE INTERCEPTOR
+// axios.interceptors.response.use(
+//   async (res) => {
+//     //IF THE RESPONSE URL IS THE REFRESH-TOKEN ENDPOINT
+//     if (res?.config?.url === `${process.env.CLIENT_DOMAIN}api/refresh_token`) {
+//       console.log("Token response", res);
+//     }
+//     //RETURN THE SUCCESSFULL RESPONSE
+//     return res;
+//   },
+//   async (err) => {
+//     const originalConfig = err?.config;
+//     //CHECKS IF A REQUEST RETURNED 401 ERROR AND THE REQUEST TOKEN ENDPOINT HAS NOT BEEN CALLED
+//     if (
+//       err?.response?.status === 401 &&
+//       !fetching &&
+//       originalConfig?.url?.toLowerCase()?.includes(process.env.API_DOMAIN)
+//     ) {
+//       //SET FETCHING TO TRUE
+//       fetching = true;
+//       //CALL THE NEXT-JS REFRESH-TOKEN ENDPOINT
+//       const refresh_token = await axios
+//         .post(`${process.env.CLIENT_DOMAIN}api/refresh_token`, {}, {})
+//         //IF THE ERROR RESPONDED WITH STATUS CODE 400 OR OTHERWISE
+//         .catch((e) => {
+//           //SET FETCHING TO FALSE
+//           fetching = false;
+//           //RETURN THE INITIAL RESPONSE ERROR
+//           return Promise.reject(e);
+//         });
+
+//       //IF THE REFRESH-TOKEN WAS GENERATED SUCCESSFULLY
+//       if (refresh_token) {
+//         //SET THE ACCESS TOKEN COOKIE AND SET THE TIMEOUT
+//         setCookie("access-token", encrypt(refresh_token?.data?.access_token));
+//         //SET THE FETCHING TO FALSE AFTER 1 MINUTE
+//         setTimeout(() => {
+//           fetching = false;
+//         }, 12000);
+//         //RESEND THE REQUEST
+//         return axios(originalConfig);
+//       } else {
+//         fetching = false;
+//         return Promise.reject("Could not retrieve refresh token");
+//       }
+//     }
+//     //CHECKS IF A REQUEST RETURNED 401 ERROR AND THE REQUEST TOKEN ENDPOINT HAS ALREADY BEEN CALLED
+//     else if (
+//       err?.response?.status === 401 &&
+//       fetching &&
+//       originalConfig?.url?.toLowerCase()?.includes(process.env.API_DOMAIN)
+//     ) {
+//       //RESEND THE REQUEST
+//       return axios(originalConfig);
+//     }
+//     //IF THE RESPONSE ERROR IS NOT 401 AND NOT FROM GOCHAT API
+//     else {
+//       //RETURN THE ERROR
+//       return Promise.reject(err);
+//     }
+//   }
+// );
+
+// //AXIOS REQUEST INTERCEPTOR
+// axios.interceptors.request.use(
+//   async (req) => {
+//     //LIKELY TO BE REMOVED
+//     req.headers = {
+//       "Content-type": "application/json;charset=UTF-8",
+//       ...req.headers,
+//     };
+
+//     //IF THE ENDPOINT IS GOCHAT API'S AND IS NOT THE REFRESH-TOKEN ENDPOINT
+//     if (
+//       req?.url.toLowerCase().includes(process.env.API_DOMAIN) &&
+//       req?.url !== `${process.env.API_DOMAIN}token` &&
+//       req?.url !== `${process.env.CLIENT_DOMAIN}api/refresh_token` &&
+//       req?.url !== `${process.env.CLIENT_DOMAIN}api/access_token`
+//     ) {
+//       //GET THE ACCESS TOKEN COOKIE
+//       const accessToken = getCookie("access-token");
+//       //APPEND IT AS AN AUTHORIZATION HEADER
+//       req.headers = {
+//         ...req.headers,
+//         Authorization: `Bearer ${decrypt(accessToken)}`,
+//       };
+//     }
+
+//     //IF THE ENDPOINT IS THE REFRESH-TOKEN ENDPOINT
+//     if (req?.url === `${process.env.API_DOMAIN}token`) {
+//       //SET THE BASIC AUTHORIZATION HEADER AND OTHER HEADERS
+//       req.headers = {
+//         ...req.headers,
+//         Authorization: `Basic ${convertToBase64(
+//           process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
+//         )}`,
+//         "Content-type": "application/x-www-form-urlencoded",
+//         "Access-control-allow-origin": "*", //http://localhost:3000
+//         Accept: "*/*",
+//       };
+//       //SET THE WITH-CREDENTIALS TO TRUE, INORDER TO SET COOKIE FROM SERVER TO CLIENT
+//       req.withCredentials = true;
+//     }
+//     //RETURN THE REQUEST
+//     return req;
+//   },
+//   //IF THERE IS A REQUEST ERROR, RETURN THE ERROR
+//   (err) => Promise.reject(err)
+// );
+
 //AXIOS RESPONSE INTERCEPTOR
 axios.interceptors.response.use(
   async (res) => {
     //IF THE RESPONSE URL IS THE REFRESH-TOKEN ENDPOINT
-    if (res?.config?.url === `${process.env.CLIENT_DOMAIN}api/refresh_token`) {
+    if (res?.config?.url === `${process.env.API_DOMAIN}token`) {
       console.log("Token response", res);
+      //CALL NEXT-JS API TO SET IT ASS A HTTPONLY COOKIE
+      // const refresh_token_response = await axios
+      //   .post("./api/setcookie", {
+      //     key: "refresh-token",
+      //     value: res.data.refresh_token,
+      //   })
+      //IF THERE IS AN ERROR SETTING THE COOKIE, RETURN THE INITIAL RESPONSE
+      // .catch((e) => res);
+      //IF COOKIE SET SUCCESSFULLY CONSOLE LOG IT
+      // refresh_token_response
+      //   ? console.log("Set refresh token cookie ", refresh_token_response)
+      //   : null;
     }
     //RETURN THE SUCCESSFULL RESPONSE
     return res;
@@ -29,12 +151,20 @@ axios.interceptors.response.use(
     ) {
       //SET FETCHING TO TRUE
       fetching = true;
-      //CALL THE NEXT-JS REFRESH-TOKEN ENDPOINT
+      const params = new URLSearchParams();
+      params.append("refresh_token", " ");
+      params.append("grant_type", "refresh_token");
+      const headers = {
+        Authorization: `Basic ${convertToBase64(
+          process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
+        )}`,
+      };
+      //CALL THE REFRESH-TOKEN ENDPOINT
       const refresh_token = await axios
-        .post(`${process.env.CLIENT_DOMAIN}api/refresh_token`, {}, {})
+        .post(`${process.env.API_DOMAIN}token`, params, headers)
         //IF THE ERROR RESPONDED WITH STATUS CODE 400 OR OTHERWISE
         .catch((e) => {
-          //SET FETCHING TO FALSE
+          //SET FETCHING TO TRUE
           fetching = false;
           //RETURN THE INITIAL RESPONSE ERROR
           return Promise.reject(e);
@@ -42,9 +172,8 @@ axios.interceptors.response.use(
 
       //IF THE REFRESH-TOKEN WAS GENERATED SUCCESSFULLY
       if (refresh_token) {
-        //SET THE ACCESS TOKEN COOKIE AND SET THE TIMEOUT
+        //SET THE ACCESS TOKEN COOKIE AND SET THE FETCHING TO TRUE
         setCookie("access-token", encrypt(refresh_token?.data?.access_token));
-        //SET THE FETCHING TO FALSE AFTER 1 MINUTE
         setTimeout(() => {
           fetching = false;
         }, 12000);
@@ -84,9 +213,7 @@ axios.interceptors.request.use(
     //IF THE ENDPOINT IS GOCHAT API'S AND IS NOT THE REFRESH-TOKEN ENDPOINT
     if (
       req?.url.toLowerCase().includes(process.env.API_DOMAIN) &&
-      req?.url !== `${process.env.API_DOMAIN}token` &&
-      req?.url !== `${process.env.CLIENT_DOMAIN}api/refresh_token` &&
-      req?.url !== `${process.env.CLIENT_DOMAIN}api/access_token`
+      req?.url !== `${process.env.API_DOMAIN}token`
     ) {
       //GET THE ACCESS TOKEN COOKIE
       const accessToken = getCookie("access-token");
@@ -118,131 +245,6 @@ axios.interceptors.request.use(
   //IF THERE IS A REQUEST ERROR, RETURN THE ERROR
   (err) => Promise.reject(err)
 );
-
-// //AXIOS RESPONSE INTERCEPTOR
-// axios.interceptors.response.use(
-//   async (res) => {
-//     //IF THE RESPONSE URL IS THE REFRESH-TOKEN ENDPOINT
-//     if (res?.config?.url === `${process.env.API_DOMAIN}token`) {
-//       console.log("Token response", res);
-//       //CALL NEXT-JS API TO SET IT ASS A HTTPONLY COOKIE
-//       const refresh_token_response = await axios
-//         .post("./api/setcookie", {
-//           key: "refresh-token",
-//           value: res.data.refresh_token,
-//         })
-//         //IF THERE IS AN ERROR SETTING THE COOKIE, RETURN THE INITIAL RESPONSE
-//         .catch((e) => res);
-//       //IF COOKIE SET SUCCESSFULLY CONSOLE LOG IT
-//       refresh_token_response
-//         ? console.log("Set refresh token cookie ", refresh_token_response)
-//         : null;
-//     }
-//     //RETURN THE SUCCESSFULL RESPONSE
-//     return res;
-//   },
-//   async (err) => {
-//     const originalConfig = err?.config;
-//     //CHECKS IF A REQUEST RETURNED 401 ERROR AND THE REQUEST TOKEN ENDPOINT HAS NOT BEEN CALLED
-//     if (
-//       err?.response?.status === 401 &&
-//       !fetching &&
-//       originalConfig?.url?.toLowerCase()?.includes(process.env.API_DOMAIN)
-//     ) {
-//       //SET FETCHING TO TRUE
-//       fetching = true;
-//       const params = new URLSearchParams();
-//       params.append("refresh_token", " ");
-//       params.append("grant_type", "refresh_token");
-//       const headers = {
-//         Authorization: `Basic ${convertToBase64(
-//           process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
-//         )}`,
-//       };
-//       //CALL THE REFRESH-TOKEN ENDPOINT
-//       const refresh_token = await axios
-//         .post(`${process.env.API_DOMAIN}token`, params, headers)
-//         //IF THE ERROR RESPONDED WITH STATUS CODE 400 OR OTHERWISE
-//         .catch((e) => {
-//           //SET FETCHING TO TRUE
-//           fetching = false;
-//           //RETURN THE INITIAL RESPONSE ERROR
-//           return Promise.reject(e);
-//         });
-
-//       //IF THE REFRESH-TOKEN WAS GENERATED SUCCESSFULLY
-//       if (refresh_token) {
-//         //SET THE ACCESS TOKEN COOKIE AND SET THE FETCHING TO TRUE
-//         setCookie("access-token", encrypt(refresh_token?.data?.access_token));
-//         fetching = false;
-//         //RESEND THE REQUEST
-//         return axios(originalConfig);
-//       } else {
-//         fetching = false;
-//         return Promise.reject("Could not retrieve refresh token");
-//       }
-//     }
-//     //CHECKS IF A REQUEST RETURNED 401 ERROR AND THE REQUEST TOKEN ENDPOINT HAS ALREADY BEEN CALLED
-//     else if (
-//       err?.response?.status === 401 &&
-//       fetching &&
-//       originalConfig?.url?.toLowerCase()?.includes(process.env.API_DOMAIN)
-//     ) {
-//       //RESEND THE REQUEST
-//       return axios(originalConfig);
-//     }
-//     //IF THE RESPONSE ERROR IS NOT 401 AND NOT FROM GOCHAT API
-//     else {
-//       //RETURN THE ERROR
-//       return Promise.reject(err);
-//     }
-//   }
-// );
-
-// //AXIOS REQUEST INTERCEPTOR
-// axios.interceptors.request.use(
-//   async (req) => {
-//     //LIKELY TO BE REMOVED
-//     req.headers = {
-//       "Content-type": "application/json;charset=UTF-8",
-//       ...req.headers,
-//     };
-
-//     //IF THE ENDPOINT IS GOCHAT API'S AND IS NOT THE REFRESH-TOKEN ENDPOINT
-//     if (
-//       req?.url.toLowerCase().includes(process.env.API_DOMAIN) &&
-//       req?.url !== `${process.env.API_DOMAIN}token`
-//     ) {
-//       //GET THE ACCESS TOKEN COOKIE
-//       const accessToken = getCookie("access-token");
-//       //APPEND IT AS AN AUTHORIZATION HEADER
-//       req.headers = {
-//         ...req.headers,
-//         Authorization: `Bearer ${decrypt(accessToken)}`,
-//       };
-//     }
-
-//     //IF THE ENDPOINT IS THE REFRESH-TOKEN ENDPOINT
-//     if (req?.url === `${process.env.API_DOMAIN}token`) {
-//       //SET THE BASIC AUTHORIZATION HEADER AND OTHER HEADERS
-//       req.headers = {
-//         ...req.headers,
-//         Authorization: `Basic ${convertToBase64(
-//           process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
-//         )}`,
-//         "Content-type": "application/x-www-form-urlencoded",
-//         "Access-control-allow-origin": "*", //http://localhost:3000
-//         Accept: "*/*",
-//       };
-//       //SET THE WITH-CREDENTIALS TO TRUE, INORDER TO SET COOKIE FROM SERVER TO CLIENT
-//       req.withCredentials = true;
-//     }
-//     //RETURN THE REQUEST
-//     return req;
-//   },
-//   //IF THERE IS A REQUEST ERROR, RETURN THE ERROR
-//   (err) => Promise.reject(err)
-// );
 
 //USER IS OFFLINE
 const isOffline = async () => {

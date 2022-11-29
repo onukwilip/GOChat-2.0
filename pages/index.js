@@ -8,12 +8,63 @@ import { setCookie, getCookie } from "cookies-next";
 import { Calls, decrypt, encrypt } from "../ExternalFunctions";
 import Modal from "../react-components/components/Modal/Modal";
 import requestIp from "request-ip";
+import { useRouter } from "next/router";
+import Loader from "../react-components/components/Loader/Loader";
 
 export default function ChatEnginePage(props) {
   const general = useContext(General);
-  const userid = props.userid;
+  const [loading, setLoading] = useState(true);
+  const navigate = useRouter();
+  const userid = getCookie("user-id"); //props.userid;
 
   console.log("IP", props.ip);
+
+  const validateUser = async () => {
+    setLoading(true);
+    const calls = new Calls();
+    const data = await calls.verifyUser(axios);
+
+    if (!data) {
+      navigate.replace("/login");
+    } else {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    validateUser();
+  }, []);
+
+  if (loading) {
+    return (
+      <>
+        <div>
+          <Head>
+            <title>GO Chat</title>
+            <meta
+              name="description"
+              content="GOChat brings you and your friends together from all over the world"
+            />
+            <link rel="icon" href="\icons8-chat-64 (1).png" />
+            <link
+              rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+              integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer"
+            />
+          </Head>
+
+          <>
+            <div className="loader-container">
+              <Loader />
+            </div>
+          </>
+        </div>
+        {general.modalState === "true" && <Modal />}
+      </>
+    );
+  }
 
   return (
     <>
@@ -43,7 +94,7 @@ export default function ChatEnginePage(props) {
   );
 }
 
-export const getServerSideProps = async ({ req, res }) => {
+/* export const getServerSideProps = async ({ req, res }) => {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
   const api = axios.create();
   const refresh_token = decrypt(getCookie("refresh-token", { req, res }));
@@ -215,4 +266,4 @@ export const getServerSideProps = async ({ req, res }) => {
       ip: ip ? ip : "",
     },
   };
-};
+}; */

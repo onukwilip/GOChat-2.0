@@ -6,7 +6,7 @@ import { General } from "../../context/GeneralContext";
 import axios from "axios";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import { encrypt } from "../../../ExternalFunctions";
+import { convertFromBase64, encrypt } from "../../../ExternalFunctions";
 
 const ConfirmOTP = () => {
   const general = useContext(General);
@@ -219,7 +219,7 @@ const ConfirmOTP = () => {
     }
   };
 
-  const generateToken = async () => {
+  /* const generateToken = async () => {
     const url = `${process.env.CLIENT_DOMAIN}api/access_token`;
 
     const body = {
@@ -228,6 +228,22 @@ const ConfirmOTP = () => {
     };
 
     const response = await axios.post(url, body).catch((e) => {
+      console.log(e);
+    });
+    console.log("Token", response);
+
+    return response;
+  }; */
+
+  const generateToken = async () => {
+    const url = `${process.env.API_DOMAIN}token`;
+
+    const params = new URLSearchParams();
+    params.append("username", OTPDetails?.userid);
+    params.append("password", convertFromBase64(OTPDetails?.password));
+    params.append("grant_type", "password");
+
+    const response = await axios.post(url, params).catch((e) => {
       console.log(e);
     });
     console.log("Token", response);

@@ -266,7 +266,7 @@ const Profile = ({ user, userId }) => {
       <div className={css.profile}>
         <div className={css["img-container"]}>
           <img
-            src={user?.ProfilePicture ? user?.ProfilePicture : dummy}
+            src={user?.ProfilePicture ? user?.ProfilePicture : dummy?.src}
             alt=""
           />
         </div>

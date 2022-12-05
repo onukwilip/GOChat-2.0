@@ -34,22 +34,6 @@ const Login = () => {
     Password: password,
   };
 
-  const isOnline = (userId) => {
-    const url = apiPrefix + `api/user/isOnline`;
-    const body = {
-      UserID: userId ? userId : "undefined",
-      isOnline: true,
-    };
-    axios
-      .put(url, body, config)
-      .then((res) => {
-        console.log("Is Online", res.data);
-      })
-      .catch((e) => {
-        console.log("Error", e);
-      });
-  };
-
   const onSubmit = (e) => {
     setDisabled(true);
     axios
@@ -79,7 +63,6 @@ const Login = () => {
             state: false,
             message: "",
           });
-          isOnline(user.UserID);
           // IF USER EXISTS NAVIGATE TO CONFIRM OTP...
           navigate.replace("/confirm");
           const OTP = {

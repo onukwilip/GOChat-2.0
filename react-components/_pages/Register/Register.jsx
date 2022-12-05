@@ -37,22 +37,6 @@ const Register = () => {
     Phone: phone,
   };
 
-  const isOnline = (userId) => {
-    const url = apiPrefix + `api/user/isOnline`;
-    const body = {
-      UserID: userId ? userId : "undefined",
-      isOnline: true,
-    };
-    axios
-      .put(url, body, config)
-      .then((res) => {
-        // console.log("Is Online", res.data);
-      })
-      .catch((e) => {
-        console.log("Error", e);
-      });
-  };
-
   const onSubmit = (e) => {
     if (username && email && password.length >= 6 && confirm === password) {
       setDisabled(true);

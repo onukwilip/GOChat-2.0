@@ -260,14 +260,16 @@ const isOnline = async () => {
   }
 };
 
-function MyApp({ Component, pageProps }) {
-  useEffect(() => {
+if (typeof window !== "undefined") {
+  window.addEventListener("load", () => {
     isOnline();
-    return () => {
-      isOffline();
-    };
-  }, []);
+  });
+  window.addEventListener("beforeunload", () => {
+    isOffline();
+  });
+}
 
+function MyApp({ Component, pageProps }) {
   return (
     <GeneralContext>
       <Component {...pageProps} />

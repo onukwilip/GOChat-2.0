@@ -23,22 +23,6 @@ const ConfirmOTP = () => {
   const config = general.config;
   const navigate = useRouter();
 
-  const isOnline = (userId) => {
-    const url = apiPrefix + `api/user/isOnline`;
-    const body = {
-      UserID: userId ? userId : "undefined",
-      isOnline: true,
-    };
-    axios
-      .put(url, body, config)
-      .then((res) => {
-        console.log("Is Online", res.data);
-      })
-      .catch((e) => {
-        console.log("Error", e);
-      });
-  };
-
   const getUserByEmail = () => {
     const _url = url + `getUserByEmail`;
     const body = {
@@ -51,8 +35,7 @@ const ConfirmOTP = () => {
         const user = res.data;
 
         user.map((each) => {
-          isOnline(each.UserID);
-          setCookie("user-id", each?.UserID);
+          setCookie("user-id", each?.UserID, { maxAge: 60 * 60 * 24 * 30 });
         });
       })
       .catch((e) => {});

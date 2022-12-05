@@ -17,8 +17,6 @@ export default function ChatEnginePage(props) {
   const navigate = useRouter();
   const userid = getCookie("user-id"); //props.userid;
 
-  console.log("IP", props.ip);
-
   const validateUser = async () => {
     setLoading(true);
     const calls = new Calls();

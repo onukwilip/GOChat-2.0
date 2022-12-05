@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// export const socketDomain = `https://gochat-socket.onrender.com`;
-export const socketDomain = `http://localhost:3002`;
+export const socketDomain = `https://gochat-socket.onrender.com`;
+// export const socketDomain = `http://localhost:3002`;
 // export const socketDomain = `./api/socket`;
 
 export const getOne = async (url, header) => {

@@ -12,5 +12,5 @@ const nextConfig = {
     ENCRYPTION_ALGORITHM: "aes-256-ctr",
   },
 };
-
+//DUMMY
 module.exports = nextConfig;

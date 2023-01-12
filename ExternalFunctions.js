@@ -153,44 +153,85 @@ export class Calls {
   }
 }
 
-// //AXIOS RESPONSE INTERCEPTOR
-// axios.interceptors.response.use(
-//   async (res) => {
-//     if (res.config.url === `${process.env.API_DOMAIN}token`) {
-//       console.log("Token response", res);
-//     }
-//     return res;
-//   },
-//   async (err) => {
-//     const originalConfig = err.config;
-//     // console.log("Error config", err);
+export class Table {
+  constructor(initial /**@type object*/) {
+    if (initial) {
+      this.instance = { ...initial };
+    } else {
+      this.instance = null;
+    }
+  }
 
-//     if (
-//       err.response?.status === 401 &&
-//       !originalConfig._retry &&
-//       originalConfig?.url?.toLowerCase()?.includes(process.env.API_DOMAIN)
-//     ) {
-//       originalConfig._retry = true;
-//       const params = new URLSearchParams();
-//       params.append("refresh_token", " ");
-//       params.append("grant_type", "refresh_token");
-//       const headers = {
-//         Authorization: `Basic ${convertToBase64(
-//           process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
-//         )}`,
-//       };
-//       const refresh_token = await axios
-//         .post(`${process.env.API_DOMAIN}token`, params, headers)
-//         .catch((e) => {
-//           return Promise.reject(e);
-//         });
+  append(values /**@type object*/) {
+    if (typeof values === "object") {
+      const oldValues = { ...this.instance };
+      this.instance = { ...oldValues, ...values };
+    }
 
-//       refresh_token
-//         ? setCookie("access-token", encrypt(refresh_token?.data?.access_token))
-//         : null;
-//       return axios(originalConfig);
-//     } else {
-//       return Promise.reject(err);
-//     }
-//   }
-// );
+    return false;
+  }
+
+  prepend(values /**@type object*/) {
+    if (typeof values === "object") {
+      const oldValues = { ...this.instance };
+      this.instance = { ...values, ...oldValues };
+    }
+
+    return false;
+  }
+
+  update(key, value) {
+    if (!this.instance) {
+      return;
+    }
+    this.instance[key] = value;
+  }
+
+  delete(key) {
+    if (!this.instance) {
+      return;
+    }
+    delete this.instance[key];
+  }
+  get(key) {
+    if (!this.instance) {
+      return;
+    }
+    return this.instance[key];
+  }
+  map(executable /**@type function */) {
+    if (!this.instance) {
+      return;
+    }
+    const entries = Object.entries(this.instance);
+    return entries.map(([key, value]) => {
+      return executable(value, key);
+    });
+  }
+
+  toArray() {
+    if (this.instance === null) {
+      return [];
+    }
+
+    const elements = [];
+
+    for (const key in this.instance) {
+      elements.push(this.instance[key]);
+    }
+
+    return elements;
+  }
+
+  isEmpty() {
+    if (this.instance === null) {
+      return true;
+    }
+
+    return Object.keys(this.instance).length < 1;
+  }
+
+  values() {
+    return { ...this.instance };
+  }
+}

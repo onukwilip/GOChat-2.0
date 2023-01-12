@@ -17,7 +17,10 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import { sendDiscussion } from "../Messages/Messages";
 import { getOne } from "../../ExternalFunctions";
 import { socketDomain } from "../../ExternalFunctions";
-// import { socket } from "../../../_pages/ChatEngine/ChatEngine";
+import { Table } from "../../../../ExternalFunctions";
+import Glassmorphism from "../../Glassmorphism/Glassmorphism";
+import { formatRelative } from "date-fns";
+import { BouncyBallsLoader } from "react-loaders-kit";
 
 const socket = io.connect(`${socketDomain}/chatroom`);
 
@@ -35,39 +38,64 @@ const ChatBlock = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [intervalId, setIntervalId] = useState("");
-  const [newChats, setNewChats] = useState([]);
-  const [refreshChat, setRefreshChat] = useState(false);
   const url = `${general.domain}api`;
-
+  const dates = new Set();
   const [chatRoomProfile, setChatRoomProfile] = useState({});
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState(new Table());
   let fetchingChats = false;
+  const [gettingChats, setGettingChats] = useState(false);
 
-  const getChats = async () => {
+  const getChats = async (date /**@type Date */, type /**@type String */) => {
     if (!fetchingChats) {
       fetchingChats = true;
-      // console.log("Start", fetchingChats);
       const _url = `${url}/chats/${general.toBase64(
         JSON.parse(sessionStorage.getItem("chatRoom"))?.ChatRoomID
-      )}`;
+      )}/${general.toBase64(date?.toLocaleDateString())}`;
       const response = await axios
         .get(_url, { ...general.config })
         .catch((e) => {
           console.log("Refresh error", e);
           fetchingChats = false;
-          // console.log("Error", fetchingChats);
+          setGettingChats(false);
         });
 
       if (response) {
-        if (response?.data?.length > 0) {
+        setGettingChats(false);
+
+        if (response?.data) {
           setTimeout(() => {
             fetchingChats = false;
           }, 15000);
-          // console.log("Success", fetchingChats);
-          setChats(response?.data);
-          // console.log("Refresh data", response);
-          // return response?.data;
+          const _chats = new Table(chats.instance);
+          type === "append"
+            ? _chats.append(response?.data)
+            : _chats.prepend(response?.data);
+          setChats(_chats);
+
+          console.log("Refresh data", response);
         }
+      }
+    }
+  };
+
+  const getPrevChats = async (date /**@type Date */) => {
+    const _url = `${url}/chats/${general.toBase64(
+      JSON.parse(sessionStorage.getItem("chatRoom"))?.ChatRoomID
+    )}/${general.toBase64(date?.toLocaleDateString())}`;
+
+    const response = await axios.get(_url, { ...general.config }).catch((e) => {
+      setGettingChats(false);
+    });
+
+    if (response) {
+      setGettingChats(false);
+
+      if (response?.data) {
+        const _chats = new Table(chats.instance);
+        _chats.prepend(response?.data);
+        setChats(_chats);
+
+        console.log("Refresh data", response);
       }
     }
   };
@@ -98,7 +126,16 @@ const ChatBlock = (props) => {
       const chatRoomData = response?.data?.Data;
       const chatRoomArray = chatRoomData?.map((chatroom) => {
         setChatRoomProfile(chatroom);
-        setChats(chatroom.Chats);
+
+        setChats(
+          new Table(
+            typeof chatroom?.Chats === "object" &&
+            Object.keys(chatroom?.Chats).length > 0
+              ? chatroom?.Chats
+              : null
+          )
+        );
+
         // console.log("Loaded!");
         // console.log("Chatroom!", chatroom);
       });
@@ -410,23 +447,6 @@ const ChatBlock = (props) => {
     }
   };
 
-  const intervalHandler = () => {
-    const interval = setInterval(() => {
-      const _url = `${url}/chats/${general.toBase64(
-        JSON.parse(sessionStorage.getItem("chatRoom"))?.ChatRoomID
-      )}`;
-      axios
-        .get(_url)
-        .then((response) => {
-          if (response?.data?.length > 0) {
-            setNewChats(response?.data);
-          }
-        })
-        .catch((e) => {});
-    }, 10000);
-    setIntervalId(interval);
-  };
-
   const removeParentChat = () => {
     general.setParentChatProperties({
       parentID: "",
@@ -437,14 +457,59 @@ const ChatBlock = (props) => {
   };
 
   const removeChat = (chatID) => {
-    setChats((prev) => prev.filter((eachChat) => eachChat?.ChatID !== chatID));
+    const oldChats = new Table(chats.instance);
+    oldChats.delete(chatID);
+    setChats(oldChats);
   };
 
   const addChatHandler = (newChat) => {
-    const oldChats = [...chats];
-    if (Array.isArray(oldChats)) {
-      setChats([...oldChats, { ...newChat }]);
+    const { ChatID: chatId } = newChat;
+    const chatToBeAdded = {
+      [chatId]: newChat,
+    };
+    const oldChats = new Table(chats.instance);
+    oldChats.append(chatToBeAdded);
+    setChats(new Table(oldChats.instance));
+  };
+
+  const SetDate = (date) => {
+    dates.add(date);
+
+    return (
+      <div className={css.date}>
+        <Glassmorphism>
+          <em>
+            {formatRelative(new Date(date), new Date())?.toLocaleUpperCase()}
+          </em>
+        </Glassmorphism>
+      </div>
+    );
+  };
+
+  const getPrevious = () => {
+    console.log("Click");
+    setGettingChats(true);
+    const stringDateArray = [...dates];
+
+    if (stringDateArray.length < 1) {
+      return;
     }
+
+    const dateArray = stringDateArray.map((eachDate) => new Date(eachDate));
+    const minDate = new Date(Math.min(...dateArray));
+    minDate.setDate(minDate.getDate() - 1);
+    getPrevChats(minDate);
+  };
+
+  const BouncyLoader = () => {
+    const loader = {
+      loading: true,
+      size: 35,
+      duration: 0.4,
+      colors: ["lightblue", "purple", "lightblue"],
+    };
+
+    return <BouncyBallsLoader {...loader}></BouncyBallsLoader>;
   };
 
   useEffect(() => {
@@ -465,28 +530,10 @@ const ChatBlock = (props) => {
     setChatRoomProfile({
       ...JSON.parse(sessionStorage.getItem("chatRoom")),
     });
-
     return () => {
       clearInterval(intervalId);
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (!fetchingChats) {
-  //     (async () => {
-  //       fetchingChats = true;
-  //       const data = await getChats().catch((e) => {
-  //         fetchingChats(false);
-  //       });
-  //       if (data) {
-  //         setTimeout(() => {
-  //           fetchingChats = false;
-  //         }, 60000);
-  //       }
-  //     })();
-  //   }
-  //   console.log("I reached here");
-  // }, [refreshChat]);
 
   useEffect(() => {
     socket.on("connection", (message) => {
@@ -495,36 +542,20 @@ const ChatBlock = (props) => {
 
     socket.on("chat_sent", (message) => {
       // setRefreshChat((prev) => !prev);
-      getChats();
+      getChats(new Date(), "append");
       console.log("chat_emit recieved and state refreshed");
     });
   }, [socket]);
 
   useEffect(() => {
-    const chatIndex = chats.findIndex(
-      (chat) => chat.ChatID === general.updatedChat.details.ChatID
-    );
-    if (chats?.length > 0 && Array.isArray(chats)) {
-      let prevChats = [...chats];
-      let updatedChat = prevChats[chatIndex];
-
-      if (
-        typeof updatedChat === "object" &&
-        updatedChat !== null &&
-        updatedChat !== undefined
-      ) {
-        updatedChat.Message = general.updatedChat.details.Message;
-      }
-
-      prevChats[chatIndex] = updatedChat;
-
-      if (prevChats?.length > 0) {
-        setChats(prevChats);
-      }
-
-      console.log("Chat index", chatIndex);
-      console.log("Updated chat", updatedChat);
-    }
+    const oldChats = new Table(chats.instance);
+    const oldChat = oldChats.get(general.updatedChat.details.ChatID);
+    oldChats.update(general.updatedChat.details.ChatID, {
+      ...oldChat,
+      Message: general.updatedChat.details.Message,
+    });
+    //console.table("Old chats", oldChats);
+    setChats(oldChats);
   }, [general.updatedChat.state]);
 
   const date = new Date(chatRoomProfile.LastSeen);
@@ -590,27 +621,52 @@ const ChatBlock = (props) => {
             </div>
           ) : (
             <>
-              {chats.length < 1 && <NoChatsAvailable />}
-              {chats.map((eachChat, i) => {
-                return (
-                  <div>
-                    {eachChat?.Author?.AuthorID === userID ? (
-                      <MyChats
-                        _chat={eachChat}
-                        removeChat={removeChat}
-                        key={i}
-                        userId={props.userId}
-                      />
+              {chats?.isEmpty() ? (
+                <NoChatsAvailable />
+              ) : (
+                <>
+                  <div className={css.previous}>
+                    {!gettingChats ? (
+                      <button
+                        onClick={() => {
+                          getPrevious();
+                        }}
+                        disabled={gettingChats}
+                      >
+                        <em>{gettingChats ? "Loading" : "Get previous"}</em>
+                      </button>
                     ) : (
-                      <TheirChats
-                        _chat={eachChat}
-                        userId={props.userId}
-                        key={i}
-                      />
+                      BouncyLoader()
                     )}
                   </div>
-                );
-              })}
+                  {chats?.map((eachChat, key) => {
+                    // console.log("Each chat", eachChat);
+                    // console.log("chat array", chats.toArray());
+                    // console.log("chat", chats);
+                    const date = new Date(eachChat?.Date).toLocaleDateString();
+
+                    return (
+                      <div>
+                        {!dates.has(date) && SetDate(date)}
+                        {eachChat?.Author?.AuthorID === userID ? (
+                          <MyChats
+                            _chat={eachChat}
+                            removeChat={removeChat}
+                            key={key}
+                            userId={props.userId}
+                          />
+                        ) : (
+                          <TheirChats
+                            _chat={eachChat}
+                            userId={props.userId}
+                            key={key}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </>
+              )}
             </>
           )}
         </ScrollToBottom>

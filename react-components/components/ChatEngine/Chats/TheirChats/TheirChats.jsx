@@ -252,7 +252,7 @@ const TheirChats = ({ _chat, userId }) => {
           <p className={css.name}>{chat?.Author?.AuthorName}</p>
           <div style={{ maxWidth: "50%", minWidth: "200px" }} align="left">
             <div className={css["file-container"]}>
-              {chat?.ChatFile.length >= 1
+              {chat?.ChatFile?.length >= 1
                 ? chat?.ChatFile.map((eachFile, i) => (
                     <Glassmorphism className={css.file} key={i}>
                       <a>
@@ -280,28 +280,28 @@ const TheirChats = ({ _chat, userId }) => {
             </div>
             <div className={css["filter-container"]}>
               <Glassmorphism className={css.filter}>
-                {chat.Parent.ParentID !== null &&
-                chat.Parent.ParentID !== "" ? (
+                {chat.Parent?.ParentID !== null &&
+                chat.Parent?.ParentID !== "" ? (
                   <>
-                    {chat?.Parent.ParentMessage !== null &&
-                    chat?.Parent.ParentMessage !== "" ? (
+                    {chat?.Parent?.ParentMessage !== null &&
+                    chat?.Parent?.ParentMessage !== "" ? (
                       <>
                         <a
-                          href={`#${chat.Parent.ParentId}`}
+                          href={`#${chat.Parent?.ParentId}`}
                           className={css["replied-link"]}
                         >
                           <div className={css["replied-message"]}>
                             <em className={css["parent-author"]}>
-                              {chat?.Parent.ParentAuthor}
+                              {chat?.Parent?.ParentAuthor}
                             </em>
                             <em className={css["parent-message"]}>
                               {chat?.Parent?.ParentMessage?.length > 50 ? (
                                 <>
-                                  {chat?.Parent.ParentMessage.substring(0, 50)}
+                                  {chat?.Parent?.ParentMessage.substring(0, 50)}
                                   ...
                                 </>
                               ) : (
-                                <>{chat?.Parent.ParentMessage}</>
+                                <>{chat?.Parent?.ParentMessage}</>
                               )}
                             </em>
                           </div>
@@ -312,9 +312,9 @@ const TheirChats = ({ _chat, userId }) => {
                 ) : null}
                 <div className={css.message}>
                   {/* {chat?.message} */}
-                  {chat?.Message.length > 100 && !showAllMessage ? (
+                  {chat?.Message?.length > 100 && !showAllMessage ? (
                     <>
-                      {chat?.Message.substring(0, 100)}
+                      {chat?.Message?.substring(0, 100)}
                       <a
                         onClick={() => {
                           setShowAllMessage((prev) => !prev);
@@ -327,7 +327,7 @@ const TheirChats = ({ _chat, userId }) => {
                   ) : (
                     <>
                       {chat?.Message}
-                      {chat?.Message.length > 100 && showAllMessage ? (
+                      {chat?.Message?.length > 100 && showAllMessage ? (
                         <>
                           <a
                             onClick={() => {

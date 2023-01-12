@@ -3,7 +3,10 @@ import css from "./Glassmorphism.module.css";
 
 const Glassmorphism = (props) => {
   return (
-    <div className={`${css["glassmorphism"]} ${props.className}`}>
+    <div
+      className={`${css["glassmorphism"]} ${props.className}`}
+      {...props.props}
+    >
       {props.children}
     </div>
   );

@@ -22,8 +22,7 @@ export const Icon = (props) => (
 const MyChats = ({ _chat, removeChat, userId }) => {
   const [showAllMessage, setShowAllMessage] = useState(false);
   const [showActions, setShowActions] = useState(false);
-  const [showAllParentMessage, setShowAllParentMessage] = useState(false);
-  const [chat, setChat] = useState({ ..._chat });
+  const [chat, setChat] = useState(_chat);
   const [showPicker, setShowPicker] = useState(false);
   const general = useContext(General);
   const url = `${general.domain}api`;
@@ -269,7 +268,7 @@ const MyChats = ({ _chat, removeChat, userId }) => {
   };
 
   useEffect(() => {
-    setChat({ ..._chat });
+    setChat(_chat);
   }, [_chat]);
 
   return (

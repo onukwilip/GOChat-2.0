@@ -189,6 +189,39 @@
   }
 }
 
+.date {
+  width: 100%;
+  @include flex(center, center, 0);
+  & > div {
+    padding: 5px 50px;
+  }
+  em {
+    font-style: normal;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.previous {
+  width: 100%;
+  margin: 5px;
+  @include flex(center, center, 0);
+  & > button {
+    padding: 5px 40px;
+    border-radius: $padding;
+    border: none;
+    box-shadow: $box-shadow;
+    background-color: rgba(white, 0.2);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+  }
+  em {
+    font-style: normal;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
 @media (max-width: 550px) {
   .chat {
     height: 100%;

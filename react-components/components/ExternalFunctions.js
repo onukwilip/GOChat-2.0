@@ -1,5 +1,7 @@
 import axios from "axios";
 
+// C:\NodeJSPractice\go-chat-node-server
+
 export const socketDomain = `https://gochat-socket.onrender.com`;
 // export const socketDomain = `http://localhost:3002`;
 // export const socketDomain = `./api/socket`;

@@ -482,7 +482,6 @@ const ChatBlock = (props) => {
     } catch (e) {
       returnValue = date.toLocaleUpperCase();
     }
-    console.log("Date", date);
     return returnValue;
   };
 
@@ -657,12 +656,8 @@ const ChatBlock = (props) => {
                     )}
                   </div>
                   {chats?.map((eachChat, key) => {
-                    // console.log("Each chat", eachChat);
-                    // console.log("chat array", chats.toArray());
-                    // console.log("chat", chats);
                     const date = new Date(eachChat?.Date).toUTCString();
-                    console.log("Original date", eachChat?.Date);
-                    console.log("Converted date", date);
+
                     return (
                       <div>
                         {!dates.has(date) && SetDate(date)}

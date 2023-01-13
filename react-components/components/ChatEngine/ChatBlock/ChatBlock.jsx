@@ -50,7 +50,7 @@ const ChatBlock = (props) => {
       fetchingChats = true;
       const _url = `${url}/chats/${general.toBase64(
         JSON.parse(sessionStorage.getItem("chatRoom"))?.ChatRoomID
-      )}/${general.toBase64(date?.toLocaleDateString())}`;
+      )}/${general.toBase64(date?.toDateString())}`;
       const response = await axios
         .get(_url, { ...general.config })
         .catch((e) => {
@@ -81,7 +81,7 @@ const ChatBlock = (props) => {
   const getPrevChats = async (/**@type Date */ date) => {
     const _url = `${url}/chats/${general.toBase64(
       JSON.parse(sessionStorage.getItem("chatRoom"))?.ChatRoomID
-    )}/${general.toBase64(date?.toLocaleDateString())}`;
+    )}/${general.toBase64(date?.toDateString())}`;
 
     const response = await axios.get(_url, { ...general.config }).catch((e) => {
       setGettingChats(false);

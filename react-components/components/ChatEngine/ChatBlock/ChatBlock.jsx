@@ -488,17 +488,22 @@ const ChatBlock = (props) => {
 
   const getPrevious = () => {
     console.log("Click");
-    setGettingChats(true);
-    const stringDateArray = [...dates];
+    try {
+      setGettingChats(true);
+      const stringDateArray = [...dates];
 
-    if (stringDateArray.length < 1) {
-      return;
+      if (stringDateArray.length < 1) {
+        return;
+      }
+
+      const dateArray = stringDateArray.map((eachDate) => new Date(eachDate));
+      const minDate = new Date(Math.min(...dateArray));
+      minDate.setDate(minDate.getDate() - 1);
+      getPrevChats(minDate);
+    } catch (e) {
+      getPrevChats(new Date());
+      console.log(e);
     }
-
-    const dateArray = stringDateArray.map((eachDate) => new Date(eachDate));
-    const minDate = new Date(Math.min(...dateArray));
-    minDate.setDate(minDate.getDate() - 1);
-    getPrevChats(minDate);
   };
 
   const BouncyLoader = () => {

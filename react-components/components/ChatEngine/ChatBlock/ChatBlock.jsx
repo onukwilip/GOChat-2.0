@@ -660,7 +660,7 @@ const ChatBlock = (props) => {
                     // console.log("Each chat", eachChat);
                     // console.log("chat array", chats.toArray());
                     // console.log("chat", chats);
-                    const date = new Date(eachChat?.Date).toLocaleDateString();
+                    const date = new Date(eachChat?.Date).toUTCString();
                     console.log("Original date", eachChat?.Date);
                     console.log("Converted date", date);
                     return (

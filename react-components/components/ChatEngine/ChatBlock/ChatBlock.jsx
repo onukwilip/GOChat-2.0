@@ -78,7 +78,7 @@ const ChatBlock = (props) => {
     }
   };
 
-  const getPrevChats = async (date /**@type Date */) => {
+  const getPrevChats = async (/**@type Date */ date) => {
     const _url = `${url}/chats/${general.toBase64(
       JSON.parse(sessionStorage.getItem("chatRoom"))?.ChatRoomID
     )}/${general.toBase64(date?.toLocaleDateString())}`;
@@ -472,15 +472,21 @@ const ChatBlock = (props) => {
     setChats(new Table(oldChats.instance));
   };
 
-  const SetDate = (date) => {
+  const formatDate = (/**@type String*/ date) => {
+    try {
+      return formatRelative(new Date(date), new Date())?.toLocaleUpperCase();
+    } catch (e) {
+      return date.toLocaleUpperCase();
+    }
+  };
+
+  const SetDate = (/**@type String*/ date) => {
     dates.add(date);
 
     return (
       <div className={css.date}>
         <Glassmorphism>
-          <em>
-            {formatRelative(new Date(date), new Date())?.toLocaleUpperCase()}
-          </em>
+          <em>{formatDate(date)}</em>
         </Glassmorphism>
       </div>
     );

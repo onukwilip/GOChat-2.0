@@ -254,7 +254,13 @@ const Profile = ({ chatroom, refreshState, userId }) => {
             </div>
             <div className={css["stat-child"]}>
               <p>
-                <em>{chatroom?.Chats?.length}</em>
+                {/* <em>{chatroom?.Chats?.length}</em> */}
+                <em>
+                  {typeof chatroom?.Chats === "object"
+                    ? Object.keys(chatroom?.Chats)?.length
+                    : chatroom?.Chats}
+                </em>
+
                 <em>Chats</em>
               </p>
             </div>

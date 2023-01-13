@@ -656,7 +656,7 @@ const ChatBlock = (props) => {
                     )}
                   </div>
                   {chats?.map((eachChat, key) => {
-                    const date = new Date(eachChat?.Date).toUTCString();
+                    const date = new Date(eachChat?.Date)?.toDateString();
 
                     return (
                       <div>

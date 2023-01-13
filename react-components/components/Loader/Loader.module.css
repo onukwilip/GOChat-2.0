@@ -11,19 +11,37 @@
 }
 
 @-webkit-keyframes loader {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  25% {
+    opacity: 0.5;
+  }
+  50% {
     opacity: 1;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
 @keyframes loader {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  25% {
+    opacity: 0.5;
+  }
+  50% {
     opacity: 1;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
   }
 }/*# sourceMappingURL=Loader.module.css.map */

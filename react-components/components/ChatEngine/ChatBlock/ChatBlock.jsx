@@ -480,11 +480,7 @@ const ChatBlock = (props) => {
         new Date()
       )?.toLocaleUpperCase();
     } catch (e) {
-      try {
-        returnValue = new Date(date)?.toDateString();
-      } catch (e) {
-        returnValue = date.toLocaleUpperCase();
-      }
+      returnValue = date.toLocaleUpperCase();
     }
     console.log("Date", date);
     return returnValue;
@@ -665,7 +661,8 @@ const ChatBlock = (props) => {
                     // console.log("chat array", chats.toArray());
                     // console.log("chat", chats);
                     const date = new Date(eachChat?.Date).toLocaleDateString();
-
+                    console.log("Original date", eachChat?.Date);
+                    console.log("Converted date", date);
                     return (
                       <div>
                         {!dates.has(date) && SetDate(date)}

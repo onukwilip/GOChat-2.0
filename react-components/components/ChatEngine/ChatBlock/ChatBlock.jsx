@@ -45,7 +45,7 @@ const ChatBlock = (props) => {
   let fetchingChats = false;
   const [gettingChats, setGettingChats] = useState(false);
 
-  const getChats = async (date /**@type Date */, type /**@type String */) => {
+  const getChats = async (/**@type Date */ date, /**@type String */ type) => {
     if (!fetchingChats) {
       fetchingChats = true;
       const _url = `${url}/chats/${general.toBase64(
@@ -473,11 +473,16 @@ const ChatBlock = (props) => {
   };
 
   const formatDate = (/**@type String*/ date) => {
+    const returnValue = "";
     try {
-      return formatRelative(new Date(date), new Date())?.toLocaleUpperCase();
+      returnValue = formatRelative(
+        new Date(date),
+        new Date()
+      )?.toLocaleUpperCase();
     } catch (e) {
-      return date.toLocaleUpperCase();
+      returnValue = date.toLocaleUpperCase();
     }
+    return returnValue;
   };
 
   const SetDate = (/**@type String*/ date) => {

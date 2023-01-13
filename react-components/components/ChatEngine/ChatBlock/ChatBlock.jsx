@@ -480,7 +480,11 @@ const ChatBlock = (props) => {
         new Date()
       )?.toLocaleUpperCase();
     } catch (e) {
-      returnValue = date.toLocaleUpperCase();
+      try {
+        returnValue = new Date(date)?.toDateString();
+      } catch (e) {
+        returnValue = date.toLocaleUpperCase();
+      }
     }
     return returnValue;
   };

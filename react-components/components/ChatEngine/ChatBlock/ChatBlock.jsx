@@ -486,6 +486,7 @@ const ChatBlock = (props) => {
         returnValue = date.toLocaleUpperCase();
       }
     }
+    console.log("Date", date);
     return returnValue;
   };
 

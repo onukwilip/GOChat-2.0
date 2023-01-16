@@ -191,10 +191,9 @@ axios.interceptors.response.use(
 //AXIOS REQUEST INTERCEPTOR
 axios.interceptors.request.use(
   async (req) => {
-    //LIKELY TO BE REMOVED
+    // //LIKELY TO BE REMOVED
     req.headers = {
       ...req.headers,
-      "Content-type": "application/json;charset=UTF-8",
     };
 
     //IF THE ENDPOINT IS GOCHAT API'S AND IS NOT THE REFRESH-TOKEN ENDPOINT

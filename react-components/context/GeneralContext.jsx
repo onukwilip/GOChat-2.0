@@ -105,7 +105,7 @@ const GeneralContext = (props) => {
   const [config, setConfig] = useState({
     headers: {
       "Access-control-allow-origin": "*",
-      "Content-type": "application/json;charset=UTF-8",
+      // "Content-type": "application/json;charset=UTF-8",
     },
   });
 

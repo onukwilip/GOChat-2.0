@@ -186,19 +186,14 @@ const ChatBlock = (props) => {
     )}/${chatID}`;
     const config = {
       headers: {
-        ...general.config?.headers,
         "Content-type": "multipart/form-data",
         "Access-control-allow-origin": "*",
       },
     };
 
-    general.chatFiles.forEach((file) => {
-      // console.log("ChatFile", file);
-    });
-
     const formData = new FormData();
-    general.chatFiles.forEach((file) => {
-      formData.append(`body${general.chatFiles.length}`, file);
+    general.chatFiles.forEach((file, i) => {
+      formData.append(`body_${i}`, file);
     });
 
     const response = await axios
@@ -215,7 +210,7 @@ const ChatBlock = (props) => {
       });
 
     if (response) {
-      // console.log("File", response);
+      console.log("File", response);
 
       setLoading(false);
       setError(false);
@@ -473,7 +468,7 @@ const ChatBlock = (props) => {
   };
 
   const formatDate = (/**@type String*/ date) => {
-    const returnValue = "";
+    let returnValue = "";
     try {
       returnValue = formatRelative(
         new Date(date),

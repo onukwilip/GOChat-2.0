@@ -5,6 +5,8 @@ import { setCookie, getCookie } from "cookies-next";
 import { convertToBase64, decrypt, encrypt } from "../ExternalFunctions";
 import { useEffect } from "react";
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 //DETERMINES IF THE INTERCEPTOR HAS CALLED THE REFRESH_TOKEN ENDPOINT
 let fetching = false;
 const userid = getCookie("user-id");

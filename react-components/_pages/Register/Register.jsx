@@ -63,7 +63,7 @@ const Register = () => {
             setUsername("");
             setConfirm("");
             setPhone("");
-            navigate("/confirm", { replace: true });
+            navigate.replace("/confirm");
           } else {
             setDisabled(false);
             console.log("There was an error", res.data);
@@ -78,6 +78,7 @@ const Register = () => {
           // console.log(e);
           setErrorMessage(true);
           setError("Error connecting to the server please try again...");
+          console.log("Error registering", e);
         });
     } else {
       if (password.length < 6) {

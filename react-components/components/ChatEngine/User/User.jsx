@@ -445,11 +445,10 @@ const EditUser = ({ user }) => {
     };
 
     axios
-      .put(
-        `${userApiRoute}${user.UserID}/${general.toBase64(ip.data.IPv4)}/`,
-        body,
-        { ...config }
-      )
+      .put(`${userApiRoute}`, body, {
+        "Content-type": "application/json",
+        "Access-control-allow-origin": "*",
+      })
       .then((res) => {
         console.log("User details", res.data);
         setUserDetailsDisabled(false);
@@ -475,13 +474,7 @@ const EditUser = ({ user }) => {
       formData.append("body", accountDetails.ProfilePicture);
 
       axios
-        .put(
-          `${userApiRoute}file/${user.UserID}/${general.toBase64(
-            ip.data.IPv4
-          )}`,
-          formData,
-          { ..._config }
-        )
+        .put(`${userApiRoute}file`, formData, { ..._config })
         .then((res) => {
           console.log("Form data", res);
         })
